@@ -1,47 +1,37 @@
 \chapter{Introduction}
 \label{c:intro}
 
-Attention plays an important role in human vision. For example, when
-we look at an image, our eye movements comprise a succession of {\em
-fixations} (repetitive positioning of eyes to parts of the image)
-and {\em saccades} (rapid eye jump). Those parts of the image that
-cause eye fixations and capture primary attention are called {\em
-regions of interest} (ROIs). Studies in visual attention and eye
-movement have shown that humans generally only attend to a few ROIs.
-Detecting these visually attentive regions in images is challenging
-but useful in many multimedia applications, such as automatic
-thumbnail cropping, object recognition, content-based image
-retrieval, adaptive image compression and automatic browsing in
-small-screen devices.
+Deep neural networks (DNN) have succeeded in various fields, including computer vision \cite{alexnet}, speech recognition \cite{speech}, machine translation \cite{google_trans}, medical analysis \cite{medical} and human games \cite{alphago}. Some results are comparable to or even better than those of human experts.
 
-Many algorithms have been proposed for automatic ROI detection in
-images. Unfortunately, these methods were often evaluated only on
-specific and small data sets that are not publicly available. The
-lack of published {\em benchmarks} makes experiments non-repeatable
-and quantitative evaluation difficult. However, as recommended by
-the latest ACM SIGMM retreat, repeatable experiments using published
-benchmarks are important for advancing the multimedia research
-field~\cite{Rowe:2005:ASR}.
 
-\begin{figure}
-\centering
-\includegraphics[width=0.45\textwidth]{kl}
-\caption{kl-distance}
-\label{kl}
-\end{figure}
+State-of-the-art methods in many tasks have recently used increasingly \textit{deep} neural network architectures. The performance has improved as networks have been made \textit{deeper}. For example, some of the best-performing models \cite{resnet1, resnet2} in computer vision have included hundreds of layers.
 
-\begin{table}[t]
-\begin{center}
-\begin{tabular}{lcc}
+Moreover, recent studies have found that as the depth of a neural network increases, problems such as vanishing or exploding gradients make the training process more challenging. \cite{xavier, he} investigated this problem deeply and suggested that initializing weights in appropriate scales can prevent gradients from vanishing or exploding exponentially.
+\cite{mft:expo, mft:info} also studied how vanishing/exploding gradients arise via \textit{mean field theory} and provided a solid theoretical discriminant to determine whether the propagation of gradients is vanishing/exploding. 
 
-\hline
-                    &  {\small Itti's method}     & {\small Fuzzy growing}    \\
-\hline
-{\small Precision}           &  0.4475    & 0.4506 \\
-{\small Recall}              &  0.5515    & 0.5542 \\
-\hline
+Inspired by previous studies, we investigated the correlation between hidden nodes and discovered that a phenomenon that we call \textit{vanishing nodes} can also affect the capability of a neural network.
+In general, the hidden nodes of a neural network become highly correlated as the network becomes deeper.
+The correlation between nodes implies the similarity between them, and high degree of similarity between nodes produces redundancy.
+Because a sufficient number of effective nodes is needed to approximate an arbitrary function, the redundancy of nodes in hidden layers may debilitate the representation capability of the entire network.
+Thus, as the depth of the network increases, the redundancy of hidden nodes may increase and hence affect the network's trainability. We name this phenomena as "\textit{Vanishing Nodes}."
 
-\end{tabular}
-\caption[Evaluation of FOA sets]{\small Evaluation of FOA sets. } \label{t:FOA}
-\end{center}
-\end{table}
+We propose a \textit{Vanishing Node Indicator (VNI)}, which is the weighted average of squared correlation coefficients, as the quantitative metric for vanishing nodes. VNI can be theoretically approximated via the results on the spectral density of the end-to-end Jacobian. The approximation of  VNI depends on the network parameters, including the width, the depth, the distribution of weights, and the activation functions, and it is shown to be simply proportional to the network depth and inversely proportional to the network width.
+
+In addition, the numerical results show that back-propagation training also intensifies the correlations of hidden nodes when we consider a deep network.
+We find that although we use a relatively large network width, the correlations of hidden nodes may still increase during the training process.
+
+%Finally, we show that vanishing/exploding gradients and vanishing nodes are two different problems, so the two problems may arise from certain conditions respectively. We provide a criterion to predict the occurrences of two problems via parameters of the network setting including the network depth, the network width, the activation function and the weight initialization. That is, our criterion is widely applicable for various neural network architectures.
+
+% In recent years, mean field theory and dynamical isometry have been used for theoretical analysis of DNN. The related works \cite{mft:sigmoid, mft:spectral} have give mathematical predictions which are excellent agree with the empirical result on vanishing/exploding gradients. Moreover, it addressed that preserving the norms of gradients, i.e. making the mean squared singular value of a network’s input-output Jacobian close to 1, is \textit{necessary} but not \textit{sufficient} condition for achieving dynamical isometry. An analysis on deep linear network \cite{mft:linear} has shown that network initializations satisfying dynamical isometry yield a faster learning speed compared to initializations that do not. Several works also observed that dynamical isometry is important for ensuring the \textit{trainability} of deep feed-forward networks \cite{mft:sigmoid, mft:spectral}, deep convolutional neural networks(CNN) \cite{mft:cnn}, and even recurrent neural networks(RNN) \cite{mft:rnn}.
+
+% However, we are curious about the cause of the ill-training situation when dynamical isometry is not satisfied. We observed that in a failed training of a DNN, after several training batches, activation values and gradients of many neurons are highly-correlated. We call it \textit{Resonance Phenomena}. We found that the occurrence of this phenomena makes the training process more difficult. Moreover, the phenomena occurs even if the norms of gradients are preserved.
+
+
+% We found that orthogonal weight initialization or residual shortcut will reduce the resonance phenomena. In this paper, we also proposed another solution to reduce the resonance phenomena.
+
+%In the body of this paper, we provide some related works in Section \ref{related}, discuss the importance of the correlation of hidden nodes and give both theoretical analysis and results of numerical simulation on the vanishing nodes phenomena in Section \ref{why}, compare the vanishing nodes problem with vanishing/exploding gradients in Section \ref{compare}, and make the conclusion in Section \ref{conclusion}.
+
+Finally, we show that vanishing/exploding gradients and vanishing nodes are two different problems, so that the two problems may arise from specific conditions. The experimental results show that the likelihood of failed training increases as the depth of the network increases. The training will become much more difficult due to lack of network representation capability. 
+
+This paper is organized as follows: some related works are discussed in Section \ref{related}. The vanishing nodes phenomenon is introduced in Section \ref{why}. Theoretical analysis and a quantitative metric are  reported in Section \ref{why}. Section \ref{compare} compares the vanishing nodes with vanishing/exploding gradients. Section \ref{experiments} reports the experimental results and Section \ref{conclusion} gives our conclusions.
+
