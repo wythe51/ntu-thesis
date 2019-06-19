@@ -1,0 +1,14 @@
+\chapter{Conclusion} \label{conclusion}
+
+The phenomenon of \textit{vanishing nodes}  is investigated as another challenge  when training deep networks.
+Like the vanishing/exploding gradients problem, vanishing nodes also make training deep networks difficult.
+The hidden nodes in a deep neural network become more correlated as the network depth increases, so the similarity between the hidden nodes increases.
+Because similarity between nodes results in redundancy, the effective number of hidden nodes in a network decreases.
+This phenomenon is called\textit{"vanishing nodes"}.
+
+To measure the degree of vanishing nodes, the \textit{Vanishing Nodes Indicator (VNI)} is proposed.
+It is shown theoretically that the VNI is proportional to the network depth and inversely proportional to the network width, which is consistent with the experimental results.
+Moreover, we explore the difference between vanishing/exploding gradients and vanishing nodes.
+%and suggest a criterion to predict the occurrence of two problems by the network depth, the network width, the activation, and the weight initialization. 
+Finally, experimental results show that vanishing/exploding gradients and vanishing nodes are two different challenges that make training deep neural networks difficult. 
+%have demonstrated that the back-propagation training of networks intensifies the correlation between hidden nodes.

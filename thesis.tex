@@ -4,7 +4,22 @@
 \usepackage{verbatim}
 \usepackage{color}
 \usepackage{url}
-\usepackage{graphicx}
+\usepackage{graphicx} %Loading the package
+\usepackage{caption}
+\usepackage{subcaption}
+\graphicspath{
+    {img/}
+    {img/VanishingComp/}
+    {img/Sec3/sim1/}
+    {img/Sec4/sim1/}
+    {img/Sec4/sim2/}
+    {img/Sec4/sim3/}
+    {img/Sec5/sim1/}
+    {img/Sec5/sim2/}
+    {img/Sec6/sim1/}
+    {img/Sec6/theo1/}
+    {img/Simulation/}
+}
 \usepackage{array}
 \usepackage{wallpaper}
 \usepackage{hyperref}
@@ -65,11 +80,11 @@
 
 % Your thesis goes here
 \input{introduction}
-%\input{related}
-%\input{photoshoot}
-%\input{modeling}
-%\input{application}
-%\input{conclusion}
+\input{related}
+\input{theory}
+\input{comparison}
+\input{experiments}
+\input{conclusion}
 
 \appendix
 

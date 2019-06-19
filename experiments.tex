@@ -1,0 +1,28 @@
+\chapter{Experiments} \label{experiments}
+
+\input{img/Simulation/mnist_sim.tex}
+
+To empirically explore the effects of the phenomenon of vanishing nodes on the training of deep neural networks, we perform experiments with the training tasks on the MNIST dataset \cite{mnist}. Because the purpose is to focus on the  vanishing nodes, the networks are designed such that vanishing/exploding gradients will never occur; that is, they are initialized with weights ($\sigma_w^2\mu_1=1$).
+%MNIST dataset includes 50,000 training images which have 28$\times$28 grey-scaled pixels.
+The network is trained with 100 batch size.
+%Since the  purpose  is to focus on the  vanishing nodes, which may lead to the insufficient network representation capability  as shown in Figure \ref{fig:sec5_sim1}, 
+The number of successful training for total 20 runs is recorded to reflect the influence of vanishing nodes on the training process, which may lead to the insufficient network representation capability  as shown in Figure \ref{fig:sec5_sim1}.
+A successful training is considered to occur when the training accuracy exceeds 90\% within 100 epochs. 
+%because the experiment purpose  is to observe the probability of vanishing nodes, which may lead to the insufficient network representation capability during the training process as shown in Figure \ref{fig:sec5_sim1}.
+The network depth $L$ ranges from $25$ to $500$, and the network width $N$ is set to $500$.
+The learning rate $\alpha$ ranges from $10^{-4}$ to $10^{-2}$ with the SGD algorithm.
+Both $L$ and $\alpha$ are uniformly distributed on the logarithmic scale.
+The experiments are performed on the MXNet framework\cite{mxnet}.
+%Notice that we initialize the matrices with $(\sigma_w^2\mu_1) = 1$ to avoid vanishing/exploding gradients problem, and 
+%The probability of successful training is estimated with 10 runs for each hyperparameter setting.
+
+%The probabilities of successful training for (Tanh/ReLU) activation and (Scaled-Gaussian/Orthogonal from \cite{mft:linear}) weights initialization are presented in Figure \ref{fig:mnist_sim}. It shows that a fail training occurs when the depth $L$ and the learning rate $\alpha$ is large, and we observe that the correspond $R_{sq}$ of failed cases increase to $1$, which implies that the vanishing nodes problem is \textbf{the main reason} making the training fails. Similar results can be obtained with different weight initializations (e.g. scaled Uniform) and optimization methods (e.g. SGD+Momentum with coeff. $=0.9$, Adam, RMSProp). Moreover, the (orthogonal + tanh) can reduce the probability for $R_{sq}$ raising to 1 (in Fig. \ref{fig:mnist_sim_s2}), while (scaled-Gaussian + tanh in Fig. \ref{fig:mnist_sim_s1}), (orthogonal + ReLU in Fig. \ref{fig:mnist_sim_s3}) and (scaled-Gaussian + ReLU) cannot. It means that the probability of fail training can be reduced if the VNI evaluated in \eqref{rsq_moment} is close to $1/N$.
+
+Figure \ref{fig:mnist_sim} shows the results of two different activation functions (Tanh/ReLU) with two different weight initializations (scaled-Gaussian/orthogonal from \cite{mft:linear}). When a network with tanh activation functions is initialized with orthogonal weights, the term of  $(\mu_2/\mu_1^2-1-s_1)$ in \eqref{rsq_moment} becomes zero. Therefore, its $R_{sq}$ will be the minimum value ($1/N$) and will not depend on the network depth. For the other network parameters, $(\mu_2/\mu_1^2-1-s_1) $ will not equal zero, and $R_{sq}$ still depends on the network depth. The experimental results show the likelihood of a failed training is high when the depth $L$ and the learning rate are large. In addition, the corresponding $R_{sq}$ of failed cases becomes nearly $1$, which causes a lack of the network representation power.
+It implies that the vanishing nodes problem is \textbf{the main reason} that the training fails. A comparison of Figure \ref{fig:mnist_sim_s3} with the other three results shows clearly that the networks with the minimum $R_{sq}$ value have the highest successful training probability.
+
+Shallow network architectures can tolerate a greater learning rate, which is why the vanishing node problem has been ignored in many networks with small depth. In a deep network, the learning rate should be set to small value to prevent $R_{sq}$ from increasing to 1. The experimental results of various training hyperparameters (Momentum, %Batch Normalization,
+Adam, RMSProp) are reported in the supplementary material due to space limitations. Also, if more efficient optimization methods (e.g. Adam, RMSProp) are used, the feasible learning rate should become smaller. The scale of the feasible learning rate for RMSProp and Adam should be roughly $10^2$ smaller than that for SGD, and that for SGD+Momentum (with momentum $=0.9$) optimization should be about $10^{0.5}$ smaller.
+The reason why the behavior of $R_{sq}$ is effected by learning rates $\alpha$ remain unexplained, suggesting further investigations to better understand the relationship between learning rates and the dynamics of $R_{sq}$
+A high learning rate will cause $R_{sq}$ to be severely intensified to nearly 1, and the representation capability of the network will be reduced, which is \textbf{the main reason} that the training fails.
+Further analyses of the experiments are provided in the supplementary material.

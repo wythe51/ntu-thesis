@@ -1,0 +1,24 @@
+\begin{figure}[h]
+\centering
+\newcommand{\myWidth}{0.48\textwidth}
+\begin{subfigure}{\myWidth}
+  \centering
+  \caption{Network width $N=200$}
+  \includegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{"MNIST_TanhWidth200(059)"}
+  \label{fig:sec4_sim2_a}
+\end{subfigure}%
+\begin{subfigure}{\myWidth}
+  \centering
+  \caption{Network width $N=500$}
+  \includegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{"MNIST_TanhWidth500(059)"}
+  \label{fig:sec4_sim2_b}
+\end{subfigure}%
+
+\caption{
+The results of VNI $R_{sq}$ with respect to network depth $L$ for the network width 200 and 500. The red line is calculated from \eqref{rsq_moment}, the blue line is computed from \eqref{rsq_def} with the input data of zero mean and i.i.d input data, and the green line is computed from \eqref{rsq_def} with MNIST data.
+%from theoretical analysis (red), simulation with i.i.d. inputs (blue) and simulation with MNIST inputs (green).
+The VNI $R_{sq}$ expressed in \eqref{rsq_moment} is very close to the original definition in \eqref{rsq_def}.
+% Note that the theoretical value of VNI is $R_{sq}\approx\frac{1}{N}\Big(\frac{L}{0.998}+1\Big)$ for the scaled-Gaussian weight  initialization ($s_1=-1$) and the $Hard\text{-}Tanh$ activation ($\mu_k=erf\big(\frac{1}{\sqrt{2\cdot 0.1}}\big)$).
+}
+\label{fig:sec4_sim2}
+\end{figure}
