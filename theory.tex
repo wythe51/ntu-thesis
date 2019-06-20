@@ -95,7 +95,7 @@ Otherwise, if all of the output nodes are highly correlated, then all squared co
 Note that the weights $\sigma_i^2\sigma_j^2$ in the weighted average can be interpreted as the importance of the output-layer nodes $i$ and $j$. If all of the output layer nodes have equal variances, VNI $R_{sq}$ is simply reduced to the average of the squared correlation coefficients $\rho_{ij}^2$.
 
 
-\input{img/Sec4/sim2/sec4sim2.tex}
+%%% FIGURE %%% \input{img/Sec4/sim2/sec4sim2.tex}
 
 With the covariance matrix defined in \eqref{covariance_eqn} and the formulas for matrix traces, VNI $R_{sq}$ can be expressed as the formula of the covariance matrix as
 \begin{equation}
@@ -191,7 +191,7 @@ In Section \ref{initial}, we showed that the correlation of a network will incre
 
 %First, the same architecture defined in \eqref{network_eqn} with $L=100$, $N=500$, tanh activation and scaled Gaussian initialization  are used.  50,000 training images of MNIST dataset (\cite{mnist}) are used with the batch size 100 to with  stochastic gradient descent (SGD) optimization and the batch size set to 100.
 
-\input{img/Sec4/sim3/sec4sim3.tex}
+%%% FIGURE %%% \input{img/Sec4/sim3/sec4sim3.tex}
 
 First, the same architecture defined in \eqref{network_eqn}, with $L=100$, $N=500$, tanh activation,  and scaled Gaussian initialization \cite{xavier}, is used. The network is then trained on the MNIST dataset \cite{mnist} and optimized with stochastic gradient descent (SGD) with a batch size of 100. The network is trained with three different learning rates for different seeds to initialize the weights for 20 runs. We then record the quartiles of VNI ($R_{sq}$) with respect to the training epochs, as shown in Figure \ref{fig:sec5_sim1}.
 
@@ -205,7 +205,7 @@ Severe intensification of VNI may occur, as shown by the blue line, which is tra
 Moreover, we observe that training will become much more difficult due to a lack of network representation capability as VNI $R_{sq}$ approaches 1.
 Further discussion is provided in Section \ref{experiments} to investigate the impact of VNI by various training parameters.
 
-\input{img/Sec5/sim1/sec5sim1.tex}
+%%% FIGURE %%% \input{img/Sec5/sim1/sec5sim1.tex}
 
 % \input{img/Sec5/sim2/sec5sim2.tex}
 
