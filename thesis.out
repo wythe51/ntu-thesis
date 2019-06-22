@@ -7,3 +7,10 @@
 \BOOKMARK [0][-]{chapter.2}{Related\040Work}{}% 7
 \BOOKMARK [0][-]{chapter.3}{Vanishing\040Nodes:\040correlation\040between\040hidden\040nodes}{}% 8
 \BOOKMARK [1][-]{section.3.1}{Vanishing\040Node\040Indicator}{chapter.3}% 9
+\BOOKMARK [1][-]{section.3.2}{Impacts\040of\040back-propagation}{chapter.3}% 10
+\BOOKMARK [0][-]{chapter.4}{Comparison\040with\040exploding/vanishing\040gradients}{}% 11
+\BOOKMARK [0][-]{chapter.5}{Experiments}{}% 12
+\BOOKMARK [1][-]{section.5.1}{Probability\040of\040failed\040training}{chapter.5}% 13
+\BOOKMARK [1][-]{section.5.2}{Analyses\040of\040failed\040training}{chapter.5}% 14
+\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 15
+\BOOKMARK [0][-]{chapter.6}{Bibliography}{}% 16
