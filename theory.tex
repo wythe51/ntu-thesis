@@ -53,7 +53,11 @@ The quantity is shown analytically to depend on the statistical property of weig
 %\section{Network Depth Makes Initial Correlations Accumulate} \label{initial}
 \section{Vanishing Node Indicator} \label{initial}
 
-Consider the network architecture defined in \eqref{network_eqn}. In addition, the following assumptions are made: (1) The input $\mathbf{x}_0$ is zero-mean, and the features in $\mathbf{x}_0$ are independent and identically distributed. (2) All weight matrices $\mathbf{W}_l$ in each layer are initialized from the same distribution with variance $\sigma_w^2/N$. (3) All the bias vectors $\mathbf{b}_l$ in each layer are initialized to zero.
+Consider the network architecture defined in \eqref{network_eqn}. In addition, the following assumptions are
+made: (1) The input $\mathbf{x}_0$ is zero-mean, and the features in $\mathbf{x}_0$ are independent and
+identically distributed. (2) All weight matrices $\mathbf{W}_l$ in each layer are initialized from the same
+distribution with variance $\sigma_w^2/N$. (3) All the bias vectors $\mathbf{b}_l$ in each layer are
+initialized to zero.
 % We would like to provide an analysis on the correlation of output nodes in a deep neural network. We will first setup a network, define a metric for measuring the correlation, perform theoretical analysis on the metric, and then provide several results of numerical simulations.
 
 % To analyze the correlation of output layer nodes toward depth, we need to define a metric to measure the output layer node correlation.
@@ -182,7 +186,6 @@ This shows that the vanishing node phenomenon becomes evident with respect to th
 % \input{img/Sec4/sim1/sec4sim1.tex}
 
 % In each simulation, the weight initialization follows the scaled-Gaussian distribution with the activation variance-maintaining property, which was discussed by \cite{xavier, he}.
-
 %\input{img/Sec4/sim3/sec4sim3.tex}
 
 \section{Impacts of back-propagation} \label{backprop}
@@ -195,19 +198,36 @@ In Section \ref{initial}, we showed that the correlation of a network will incre
 %%% FIGURE %%%
 \input{img/Sec4/sim3/sec4sim3.tex}
 
-First, the same architecture defined in \eqref{network_eqn}, with $L=100$, $N=500$, tanh activation,  and scaled Gaussian initialization \cite{xavier}, is used. The network is then trained on the MNIST dataset \cite{mnist} and optimized with stochastic gradient descent (SGD) with a batch size of 100. The network is trained with three different learning rates for different seeds to initialize the weights for 20 runs. We then record the quartiles of VNI ($R_{sq}$) with respect to the training epochs, as shown in Figure \ref{fig:sec5_sim1}.
+First, the same architecture defined in \eqref{network_eqn}, with $L=100$, $N=500$, tanh activation, 
+and scaled Gaussian initialization \cite{xavier}, is used. The network is then trained on the MNIST
+dataset \cite{mnist} and optimized with stochastic gradient descent (SGD) with a batch size of 100.
+The network is trained with three different learning rates for different seeds to initialize the weights
+for 20 runs. We then record the quartiles of VNI ($R_{sq}$) with respect to the training epochs, as shown in
+Figure \ref{fig:sec5_sim1}.
 
 %Figure \ref{fig:sec5_sim1} displays the results. 
-The boundaries of the colored areas represent the first and third quartiles (i.e., the 25th and 75th percentiles), and the line represents the second quartile (i.e., the median) of $R_{sq}$ over 20 trials.
+The boundaries of the colored areas represent the first and third quartiles (i.e., the 25th and 75th
+percentiles), and the line represents the second quartile (i.e., the median) of $R_{sq}$ over 20 trials.
 %The horizontal axis is for the training epoch.
-% In Figure \ref{fig:sec5_sim2}, we present the pairwise averaged squared correlation coefficients $\rho_{ij}^2$ via its color. The brighter pixels represent higher correlations.
-% Note that in Figure \ref{fig:sec5_sim2_a}, the color of layer 100 is dark because the network width $N=500$ is large, relative to the network depth $L=100$.
-It shows that in some cases, VNI increases to 1 during the training process, otherwise VNI grows larger initially, and then decreases to a value which is larger than the initial VNI.
-Severe intensification of VNI may occur, as shown by the blue line, which is trained at the learning rate of $10^{-2} $. 
-Moreover, we observe that training will become much more difficult due to a lack of network representation capability as VNI $R_{sq}$ approaches 1.
-Further discussion is provided in Section \ref{experiments} to investigate the impact of VNI by various training parameters.
+% 
+% 
+It shows that in some cases, VNI increases to 1 during the training process, otherwise VNI grows larger
+initially, and then decreases to a value which is larger than the initial VNI.
+Severe intensification of VNI may occur, as shown by the blue line, which is trained at the learning rate
+of $10^{-2} $. 
+Moreover, we observe that training will become much more difficult due to a lack of network representation
+capability as VNI $R_{sq}$ approaches 1.
+Further discussion is provided in Section \ref{experiments} to investigate the impact of VNI by various
+training parameters.
 
-%%% FIGURE %%% \input{img/Sec5/sim1/sec5sim1.tex}
+In Figure \ref{fig:sec5_sim2}, we present the pairwise averaged squared correlation coefficients
+$\rho_{ij}^2$ via its color. The brighter pixels represent higher correlations.
+Note that in Figure \ref{fig:sec5_sim2_a}, the color of layer 100 is dark because the network width
+$N=500$ is large, relative to the network depth $L=100$.
 
-% \input{img/Sec5/sim2/sec5sim2.tex}
+%%% FIGURE %%%
+\input{img/Sec5/sim1/sec5sim1.tex}
+
+%%% FIGURE %%%
+\input{img/Sec5/sim2/sec5sim2.tex}
 
