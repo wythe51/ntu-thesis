@@ -21,14 +21,20 @@ The weight matrix of layer $l$ is $\mathbf{W}_l\in \mathbb{R}^{N\times N}$, the 
 \label{network_eqn}
 \end{equation}
 
-The variance of node $i$ is defined as $\sigma_i^2\overset{\Delta}{=}\mathbb{E}_{\mathbf{x}_0}[(x_{l(i)}-\overline{x_{l(i)}})^2]$, and the squared correlation coefficient ($\rho_{ij}^2$) between nodes $i$ and $j$ can be computed as $\rho_{ij}^2\overset{\Delta}{=}
+The variance of node $i$ is defined as $\sigma_i^2\overset{\Delta}{=}\mathbb{E}_{\mathbf{x}_0}[(x_{l(i)}-\overline{x_{l(i)}})^2]$, and the squared correlation coefficient ($\rho_{ij}^2$) between nodes $i$ and $j$ can be 
+computed as 
+\begin{equation}
+\rho_{ij}^2\overset{\Delta}{=}
 \frac
 {\mathbb{E}_{\mathbf{x}_0}[(x_{l(i)}-\overline{x_{l(i)}})(x_{l(j)}-\overline{x_{l(j)}})]^2}
-{\mathbb{E}_{\mathbf{x}_0}[(x_{l(i)}-\overline{x_{l(i)}})^2]\mathbb{E}_{\mathbf{x}_0}[(x_{l(j)}-\overline{x_{l(j)}})^2]},$
+{\mathbb{E}_{\mathbf{x}_0}[(x_{l(i)}-\overline{x_{l(i)}})^2]\mathbb{E}_{\mathbf{x}_0}[(x_{l(j)}-\overline{x_{l(j)}})^2]},
+\end{equation}
 where $\rho_{ij}^2$ ranges from $0$ to $1$.
 Nodes $x_{l(i)}$ and $x_{l(j)}$ are highly correlated only if the magnitude of the correlation coefficient between two nodes $\rho_{ij}$ is nearly 1. $\rho_{ij}^2$ indicates the magnitude of similarity between node $i$ and node $j$.
-If $\rho_{ij}$ is close to $+1$ or $-1$, then node $i$ can be approximated in a linear fashion by node $j$. Great similarity indicates redundancy. If nodes of hidden layers exhibit great similarity, the effective number of nodes will be much lower than the original network width. Therefore, we call this phenomena \textit{Vanishing Node Problem}.
-
+If $\rho_{ij}$ is close to $+1$ or $-1$, then node $i$ can be approximated in a linear fashion by node $j$.
+Great similarity indicates redundancy.
+If nodes of hidden layers exhibit great similarity, the effective number of nodes will be much lower than the original network width.
+Therefore, we call this phenomena \textit{Vanishing Node Problem}.
 
 
 %Recent works have put emphasis on the depth of a neural network, since the \textit{width} of a neural network also matters.
