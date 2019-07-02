@@ -196,7 +196,7 @@ This shows that the vanishing node phenomenon becomes evident with respect to th
 In Section \ref{initial}, we showed that the correlation of a network will increase as the depth $L$ increases; in this section, we exploit the manner in which the back-propagation training process will influence the network correlation by the following experiments. 
 %that the correlation of nodes are intensified during a back-propagation training process.
 
-%First, the same architecture defined in \eqref{network_eqn} with $L=100$, $N=500$, tanh activation and scaled Gaussian initialization  are used.  50,000 training images of MNIST dataset (\cite{mnist}) are used with the batch size 100 to with  stochastic gradient descent (SGD) optimization and the batch size set to 100.
+%First, 
 
 %%% FIGURE %%%
 \input{img/Sec4/sim3/sec4sim3.tex}
@@ -223,13 +223,19 @@ capability as VNI $R_{sq}$ approaches 1.
 Further discussion is provided in Section \ref{experiments} to investigate the impact of VNI by various
 training parameters.
 
-% In Figure \ref{fig:sec5_sim2}, we present the pairwise averaged squared correlation coefficients
-% $\rho_{ij}^2$ via its color. The brighter pixels represent higher correlations.
-% Note that in Figure \ref{fig:sec5_sim2_a}, the color of layer 100 is dark because the network width
-% $N=500$ is large, relative to the network depth $L=100$.
+In Figure \ref{fig:sec5_sim2}, we present the pairwise averaged squared correlation coefficients
+$\rho_{ij}^2$ via its color.
+The architecture is defined with $L=100$, $N=500$, tanh activation and scaled Gaussian initialization.
+Random samples from the distribution $\mathbf{x}_0\sim Gaussian(\mu_x=0, \sigma^2_x=0.1)$
+with batch size 1000 are used as the input data, and the same distribution is used as the output gradients. 
+The network is trained by SGD optimization with learning rate $=10^{-2}$.
+The darker pixels represent higher correlations.
+Note that in Figure \ref{fig:sec5_sim2_a}, the color of layer 100 is bright because the network width
+$N=500$ is large relative to the network depth $L=100$.
 
 %%% FIGURE %%%
 \input{img/Sec5/sim1/sec5sim1.tex}
 
-%%% FIGURE %%% \input{img/Sec5/sim2/sec5sim2.tex}
+%%% FIGURE %%%
+\input{img/Sec5/sim2/sec5sim2.tex}
 
