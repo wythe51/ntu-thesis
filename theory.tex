@@ -37,15 +37,6 @@ If nodes of hidden layers exhibit great similarity, the effective number of node
 Therefore, we call this phenomena \textit{Vanishing Node Problem}.
 
 
-%Recent works have put emphasis on the depth of a neural network, since the \textit{width} of a neural network also matters.
-%According to the "universal approximation theorem" proved by \cite{universal}, a single hidden layer with a finite number of neurons can approximate continuous functions on compact subsets.
-%That is, the number of neurons in a network is closely related to its representation power, which is .
-
-%Vanishing node is a problem that in some cases, several nodes in hidden layers or the output layer in a neural network architecture are highly correlated even if nodes of the input layer are independent.
-%Correlations imply dependencies, and dependencies produce redundancy.
-%That is, in the worst case, all of hidden nodes or output nodes are so correlated that if we remove the redundant nodes, the number of remaining nodes are much less than the original network width.
-%Therefore, we name this phenomena as the \textit{vanishing node problem}.
-
 % \input{img/Sec3/sim1/sec3sim1.tex}
 
 %\section{Results} \label{results}
@@ -239,3 +230,43 @@ $N=500$ is large relative to the network depth $L=100$.
 %%% FIGURE %%%
 \input{img/Sec5/sim2/sec5sim2.tex}
 
+
+
+\section{Representation power vanishes as the network goes deeper} \label{repr_general}
+
+%Recent works have put emphasis on the depth of a neural network, since the \textit{width} of a neural network also matters.
+%According to the "universal approximation theorem" proved by \cite{universal}, a single hidden layer with a finite number of neurons can approximate continuous functions on compact subsets.
+%That is, the number of neurons in a network is closely related to its representation power, which is .
+
+%Vanishing node is a problem that in some cases, several nodes in hidden layers or the output layer in a neural network architecture are highly correlated even if nodes of the input layer are independent.
+%Correlations imply dependencies, and dependencies produce redundancy.
+%That is, in the worst case, all of hidden nodes or output nodes are so correlated that if we remove the redundant nodes, the number of remaining nodes are much less than the original network width.
+%Therefore, we name this phenomena as the \textit{vanishing node problem}.
+
+
+
+\begin{figure}[h]
+    \centering
+    \newcommand{\myWidth}{0.88\textwidth}
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{Network depth $L\in[1, 10000]$}
+      \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{10000_layer_rsq}
+      \label{fig:repr_general_a}
+    \end{subfigure}
+    
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{Network depth $L\in[1, 500]$}
+      \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{500_layer_rsq}
+      \label{fig:repr_general_b}
+    \end{subfigure}%
+    
+    \caption[The initial $R_{sq}$ increases to 1 as the network goes deeper.]{
+    }
+    \label{fig:repr_general}
+\end{figure}
+
+\section{Representation power of networks with orthogonal weight matrices} \label{repr_orthogonal}
+
+\section{Representation power of architectures with residual connections} \label{repr_residual}
