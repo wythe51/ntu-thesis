@@ -36,7 +36,10 @@ According to the assumptions in Section \ref{why} and  \eqref{covariance_eqn}, w
     &= \mathbb{E}\Big[
     \Big(\frac{\partial Cost}{\partial \mathbf{x}_L}\mathbf{J}\Big)
     \Big(\frac{\partial Cost}{\partial \mathbf{x}_L}\mathbf{J}\Big)^T\Big]\Big/N
-    =\sigma_y^2\cdot tr(\mathbf{J}^T\mathbf{J})/N,
+    \\
+    &=\mathbb{E}\Big[tr\Big(\mathbf{J}\mathbf{J}^T\frac{\partial Cost}{\partial \mathbf{x}_L}^T\frac{\partial Cost}{\partial \mathbf{x}_L}\Big)\Big]/N
+    \\
+    &=\sigma_y^2\cdot tr(\mathbf{J}^T\mathbf{J})/N,
     \end{aligned}
     \label{yvar_to_trace}
 \end{equation}
