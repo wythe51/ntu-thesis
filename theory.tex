@@ -87,7 +87,6 @@ $\mathbf{x}_L-\overline{\mathbf{x}_L} \approx \mathbf{Jx}_0$. Therefore, the cov
     \sigma_x^2\mathbf{J}\mathbf{J}^T,
     \label{covariance_eqn}
 \end{equation}
-
 where $\sigma_x^2$ is the common variance of features in $\mathbf{x}_0$, and the expected values are calculated with respect to the input $\mathbf{x}_0$. For notational simplicity, we omit the subscript $\mathbf{x}_0$ of the expectations in the following equations. 
 It can be easily derived that the squared covariance of nodes $i$ and $j$ is equal to the product of the squared correlation coefficient and the two variances. That is, $[C_{(ij)}]^2=\rho_{ij}^2\sigma_i^2\sigma_j^2$.
 
@@ -142,7 +141,6 @@ From \eqref{covariance_eqn}, substituting $\sigma_x^2\mathbf{JJ}^T$ for $\mathbf
     =\frac{m_2}{Nm_1^2},
     \label{rsq_eigen}
 \end{equation}
-
 where $\lambda_k$ is the $k$-th eigenvalue of $\mathbf{JJ}^T$, and $m_i$ is the $i$-th moment of eigenvalues of $\mathbf{JJ}^T$.
 
 %In \eqref{rsq_eigen}, we show that  $R_{sq}$ is related to the moments of eigenvalues of $\mathbf{JJ}^T$. Since the moments of eigenvalues of $\mathbf{JJ}^T$ have been analyzed in previous work (\cite{mft:spectral},) we would like to insert the result for the moments of eigenvalues, which is related to the network depth $L$, the network width $N$, the activation function $\phi(\cdot)$ and weight initialization, into the approximation of $R_{sq}$.
@@ -162,7 +160,6 @@ If we insert the expressions of $m_1$ and $m_2$ into \eqref{rsq_eigen}, we can o
     ,
     \label{rsq_moment}
 \end{equation}
-
 which shows that VNI is determined by the depth $L$, the width $N$, the moments of the activation functions $\mu_k$ and the statistical property of weights $s_1$. 
 Because $R_{sq}$ ranges from $1/N$ to $1$, the approximation in \eqref{rsq_moment} is more accurate when $N>>L$.
 Moreover, it can be easily seen that the correlation is inversely proportional to the network width $N$, and proportional to the network depth $L$.
@@ -226,14 +223,13 @@ capability as VNI $R_{sq}$ approaches 1.
 Further discussion is provided in Section \ref{experiments} to investigate the impact of VNI by various
 training parameters.
 
-In Figure \ref{fig:sec5_sim2}, we present the pairwise averaged squared correlation coefficients
-$\rho_{ij}^2$ via its color. The brighter pixels represent higher correlations.
-Note that in Figure \ref{fig:sec5_sim2_a}, the color of layer 100 is dark because the network width
-$N=500$ is large, relative to the network depth $L=100$.
+% In Figure \ref{fig:sec5_sim2}, we present the pairwise averaged squared correlation coefficients
+% $\rho_{ij}^2$ via its color. The brighter pixels represent higher correlations.
+% Note that in Figure \ref{fig:sec5_sim2_a}, the color of layer 100 is dark because the network width
+% $N=500$ is large, relative to the network depth $L=100$.
 
 %%% FIGURE %%%
 \input{img/Sec5/sim1/sec5sim1.tex}
 
-%%% FIGURE %%%
-\input{img/Sec5/sim2/sec5sim2.tex}
+%%% FIGURE %%% \input{img/Sec5/sim2/sec5sim2.tex}
 

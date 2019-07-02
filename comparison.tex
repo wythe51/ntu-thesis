@@ -7,7 +7,14 @@ In this section, we explore whether the \textit{vanishing node} phenomenon arise
 %We will first discuss the exploding/vanishing gradients problem via the theoretical model used in Section \ref{why}. We compare exploding and vanishing gradients problem with vanishing node phenomena analytically. Finally, we provide some numerical results to show the difference between exploding/vanishing gradients problem and vanishing node phenomena.
 
 As in a previous study \cite{xavier}, we use the variances of hidden nodes to evaluate the scales of back-propagated gradients. Consider the model and the assumptions in Section \ref{why} and an additional assumption: the gradient of output layer $\frac{\partial Cost}{\partial \mathbf{x}_L}$ is a zero-mean i.i.d. random (row) vector.
-That is, $\mathbb{E}[\mathbf{x}_0{\mathbf{x}_0}^T] = \sigma_x^2\cdot\mathbf{I}$ and $\mathbb{E}\Big[\Big(\frac{\partial Cost}{\partial \mathbf{x}_L}\Big)^T\frac{\partial Cost}{\partial \mathbf{x}_L}\Big] = \sigma_y^2\cdot\mathbf{I}$,
+That is,
+\begin{equation}
+    \begin{aligned}
+    \mathbb{E}[\mathbf{x}_0{\mathbf{x}_0}^T] &= \sigma_x^2\cdot\mathbf{I} \\
+    \mathbb{E}\Big[\Big(\frac{\partial Cost}{\partial \mathbf{x}_L}\Big)^T\frac{\partial Cost}{\partial \mathbf{x}_L}\Big] 
+    &= \sigma_y^2\cdot\mathbf{I},
+    \end{aligned}
+\end{equation}
 where $\sigma_x^2$ and $\sigma_y^2$ are defined as the variances of the input layer nodes and output layer gradients, respectively.
 Consider %the forward and backward end-to-end propagation of variances, that is, 
 the variances of the output nodes $Var[\mathbf{x}_L]$ and input layer gradients $Var\Big[\frac{\partial Cost}{\partial \mathbf{x}_0}\Big]$, respectively.
@@ -15,17 +22,19 @@ The exploding/vanishing gradients  occur only if the scales of forward and backw
 This means that the magnitude of the gradients will be bounded if we can prevent the scales of forward and backward propagation from exploding or vanishing. 
 %Therefore, we can keep forward and backward end-to-end propagation of variances from exploding or vanishing in order to avoid exploding and vanishing gradients problem.
 
-According to the assumptions in Section \ref{why} and  \eqref{covariance_eqn}, we can approximate the shared scalar variance of all output nodes $Var[\mathbf{x}_L]\in\mathbb{R}$ and the shared scalar variance of all input gradients $Var\Big[\frac{\partial Cost}{\partial \mathbf{x}_0}\Big]\in\mathbb{R}$ as
+According to the assumptions in Section \ref{why} and  \eqref{covariance_eqn},
+we can approximate the shared scalar variance of all output nodes $Var[\mathbf{x}_L]\in\mathbb{R}$ as
 
 \begin{equation}
     \begin{aligned}
     Var[\mathbf{x}_L] &=\mathbb{E}[(\mathbf{x}_L-\overline{\mathbf{x}_L})^T(\mathbf{x}_L-\overline{\mathbf{x}_L})]/N
     \approx \mathbb{E}[(\mathbf{Jx}_0)^T\mathbf{Jx}_0]/N\\
     &=\mathbb{E}[tr(\mathbf{J}^T\mathbf{J}\mathbf{x}_0\mathbf{x}_0^T)]/N
-    =\sigma_x^2\cdot tr(\mathbf{J}^T\mathbf{J})/N
+    =\sigma_x^2\cdot tr(\mathbf{J}^T\mathbf{J})/N,
     \label{xvar_to_trace}
     \end{aligned}
 \end{equation}
+and approximation the shared scalar variance of all input gradients $Var\Big[\frac{\partial Cost}{\partial \mathbf{x}_0}\Big]\in\mathbb{R}$ as
 
 \begin{equation}
     \begin{aligned}
@@ -43,25 +52,33 @@ According to the assumptions in Section \ref{why} and  \eqref{covariance_eqn}, w
     \end{aligned}
     \label{yvar_to_trace}
 \end{equation}
-
 where the chain rule for back-propagation: $\frac{\partial Cost}{\partial \mathbf{x}_0}=\frac{\partial Cost}{\partial \mathbf{x}_L}\frac{\partial \mathbf{x}_L}{\partial \mathbf{x}_0}=\frac{\partial Cost}{\partial \mathbf{x}_L}\mathbf{J}$ is used, and the shared scalar variance of a vector is the average of the variances of all vector components.
 Note that because the product of a row vector and a column vector is a scalar, the product is equal to its trace. Also, it is already known that
-$tr(\mathbf{J}^T\mathbf{J})=N\cdot m_1=N\cdot(\sigma_w^2\mu_1)^L$. Thus, we have $Var[\mathbf{x}_L]=\sigma_x^2(\sigma_w^2\mu_1)^L$ and $Var\Big[\frac{\partial Cost}{\partial \mathbf{x}_0}\Big]=\sigma_y^2(\sigma_w^2\mu_1)^L$,
+$tr(\mathbf{J}^T\mathbf{J})=N\cdot m_1=N\cdot(\sigma_w^2\mu_1)^L$. Thus, we have
+\begin{equation}
+    \begin{aligned}
+    Var[\mathbf{x}_L]&\approx\sigma_x^2(\sigma_w^2\mu_1)^L\\
+    Var\Big[\frac{\partial Cost}{\partial \mathbf{x}_0}\Big]&=\sigma_y^2(\sigma_w^2\mu_1)^L,
+    \end{aligned}
+\end{equation}
 where $\sigma_w^2=N\cdot Var[W_{ij}]$, and $\mu_1$ is the first moment of the nonlinear activation function. It is obvious that the variances of both forward and backward propagation will neither explode nor vanish if and only if $(\sigma_w^2\mu_1)=1$.
 
 For the weight gradient of the hidden layer $l$, the variance can be used to measure the scale distribution. Because $\frac{\partial Cost}{\partial \mathbf{W}_l}
-=\mathbf{x}_{l-1}\cdot\frac{\partial Cost}{\partial \mathbf{h}_l}$ and both $\mathbf{x}_{l-1}$ and $\frac{\partial Cost}{\partial \mathbf{h}_l}$ are assumed to be zero-mean, the variance of the weight gradient can be evaluated as
+=\mathbf{x}_{l-1}\cdot\frac{\partial Cost}{\partial \mathbf{h}_l}$ and both $\mathbf{x}_{l-1}$ and $\frac{\partial Cost}{\partial \mathbf{h}_l}$ are assumed to be zero-mean and independent of each other, the variance of the weight gradient can be evaluated as
 
 \begin{equation}
+    \begin{aligned}
     Var\Big[\frac{\partial Cost}{\partial \mathbf{W}_l}\Big]
-    =
+    &=
     Var[\mathbf{x}_{l-1}]\cdot
-    Var\Big[\frac{\partial Cost}{\partial \mathbf{h}_l}\Big]
-    %=
-    %\sigma_x^2(\sigma_w^2\mu_1)^{l-1}\cdot
-    %\sigma_y^2(\sigma_w^2\mu_1)^{L-l}
+    Var\Big[\frac{\partial Cost}{\partial \mathbf{h}_l}\Big]\\
+    &
     \approx
+    \sigma_x^2(\sigma_w^2\mu_1)^{l-1}\cdot
+    \sigma_y^2(\sigma_w^2\mu_1)^{L-l}\\
+    &=
     \sigma_x^2\sigma_y^2(\sigma_w^2\mu_1)^{L-1},
+    \end{aligned}
     \label{weight_var}
 \end{equation}
 where we can evaluate $Var[\mathbf{x}_{l-1}]$ and $Var\Big[\frac{\partial Cost}{\partial \mathbf{h}_l}\Big]$ using the results of the forward/backward variance propagation and split the entire network into two sub-networks. One sub-network has the input layer $\mathbf{x}_{0}$ and output layer $\mathbf{x}_{l-1}$, and the other sub-network has the input layer $\mathbf{x}_{l}$ and the output layer $\mathbf{x}_{L}$. Note that \eqref{weight_var} also concludes that if and only if $(\sigma_w^2\mu_1)=1$, the weight gradients will never explode or vanish.
