@@ -85,7 +85,14 @@ For the weight gradient of the hidden layer $l$, the variance can be used to mea
 \end{equation}
 where we can evaluate $Var[\mathbf{x}_{l-1}]$ and $Var\Big[\frac{\partial Cost}{\partial \mathbf{h}_l}\Big]$ using the results of the forward/backward variance propagation and split the entire network into two sub-networks. One sub-network has the input layer $\mathbf{x}_{0}$ and output layer $\mathbf{x}_{l-1}$, and the other sub-network has the input layer $\mathbf{x}_{l}$ and the output layer $\mathbf{x}_{L}$. Note that \eqref{weight_var} also concludes that if and only if $(\sigma_w^2\mu_1)=1$, the weight gradients will never explode or vanish.
 
-However, \eqref{rsq_moment} shows that VNI ($R_{sq}$) may still accumulate with the network depth even if $(\sigma_w^2\mu_1)=1$. That is, the characteristic of the vanishing nodes becomes evident  when $(\mu_2/\mu_1^2-1-s_1)$ is large, whereas vanishing/exploding gradients occurs when $(\sigma_w^2\mu_1)$ is far from 1. If the network's initialization parameter is appropriately set such that $(\sigma_w^2\mu_1)$ is close to 1, $R_{sq}$ may still accumulate due to the network depth, the activation function, and the weight distribution. Therefore, from \eqref{rsq_moment} and \eqref{weight_var}, it is clear that the problem of vanishing nodes  may occur regardless of  exploding/vanishing gradients.
+However, \eqref{rsq_moment} shows that VNI ($R_{sq}$) may still accumulate with the network depth even
+if $(\sigma_w^2\mu_1)=1$. That is, the characteristic of the vanishing nodes becomes evident 
+when $(\mu_2/\mu_1^2-1-s_1)$ is large, whereas vanishing/exploding gradients occurs when
+$(\sigma_w^2\mu_1)$ is far from 1. If the network's initialization parameter is appropriately set such
+that $(\sigma_w^2\mu_1)$ is close to 1, $R_{sq}$ may still accumulate due to the network depth, the
+activation function, and the weight distribution. Therefore, from \eqref{rsq_moment} and
+\eqref{weight_var}, it is clear that the problem of vanishing nodes  may occur regardless of 
+exploding/vanishing gradients.
 
 \section{Norm-preserving weight initialization} \label{comp:init}
 

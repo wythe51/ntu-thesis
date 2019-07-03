@@ -36,6 +36,17 @@ Great similarity indicates redundancy.
 If nodes of hidden layers exhibit great similarity, the effective number of nodes will be much lower than the original network width.
 Therefore, we call this phenomena \textit{Vanishing Node Problem}.
 
+Figure \ref{fig:sec4_sim1} provides an intuitive view of the vanishing node problem. The network
+architecture is build with depth $L=100$, width $N\in\{6, 50, 100\}$and activation function $Hard$-$Tanh$/
+The weight matrices are initialized with scaled-Gaussian initialization (further discussion will provide
+in Section \ref{comp:init}) and the biases are set to zeros. The network is fed with 1000 random generated
+data points drawn from the zero-mean white Gaussian distribution. After the forward propagation, we choose
+6 output nodes from the output layer to plot scatter plots with the first output node.
+It is obvious that the neurons in Figure \ref{fig:sec4_sim1_a} are so linearly correlated that the
+actual number of effective nodes is 1, while the neurons in Figure \ref{fig:sec4_sim1_c} seems to be
+uncorrelated to each others.
+It implies that if the network width $N$ is relatively small (compared to the network depth $L$), the
+output nodes may become highly correlated, and hence results in the vanishing node problem.
 
 % \input{img/Sec3/sim1/sec3sim1.tex}
 
@@ -163,6 +174,7 @@ To evaluate the accuracy of \eqref{rsq_moment} with respect to the original defi
 One thousand data points with the distribution $\mathbf{x}_0\sim Gaussian(\mu_x=0, \sigma^2_x=0.1)$ and 50,000 training images in MNIST dataset \cite{mnist} are fed into the network.
 %as the "i.i.d. inputs" and the "MNIST dataset" respectively.
 In each network architecture, the weights are initialized with scaled-Gaussian distribution \cite{xavier} of various random seeds for 100 runs.
+The details of the scaled-Gaussian initialization are provided in Section \ref{comp:init}.
 The $R_{sq}$ calculated from \eqref{rsq_def} is then recorded to compute the mean and the standard deviation with respect to various network depths $L$.
 %and then record the mean and the standard deviation of $R_{sq}$ via \eqref{rsq_def} as the vertical axis.
 %The horizontal axis is the network depth $L$. 
@@ -181,7 +193,9 @@ This shows that the vanishing node phenomenon becomes evident with respect to th
 
 % \input{img/Sec4/sim1/sec4sim1.tex}
 
-% In each simulation, the weight initialization follows the scaled-Gaussian distribution with the activation variance-maintaining property, which was discussed by \cite{xavier, he}.
+In each simulation, the weight initialization follows the scaled-Gaussian distribution with the
+activation variance-maintaining property as defined by \cite{xavier, he}. The details of the
+scaled-Gaussian initialization method will be discussed in Section \ref{comp:init}.
 %\input{img/Sec4/sim3/sec4sim3.tex}
 
 \section{Impacts of back-propagation} \label{backprop}
@@ -216,9 +230,24 @@ capability as VNI $R_{sq}$ approaches 1.
 Further discussion is provided in Section \ref{experiments} to investigate the impact of VNI by various
 training parameters.
 
+In Figure \ref{fig:sec5_sim15}, the dynamics VNI $R_{sq}$ in hidden layers is provided.
+The depth and the width of the network is set to $L=100, N=500$.
+The activation is $tanh$ activation and the weight matrices are initialized with scaled Gaussian
+distribution (will be discussed in Section \ref{comp:init}).
+The optimization method is SGD with learning rates $10^{-3}$ in Figure \ref{fig:sec5sim15_a} and
+$10^{-2}$ in Figure \ref{fig:sec5sim15_b}.
+The training is performed on the MNIST dataset, and we evaluate the averages of hidden layer
+VNI $R_{sq}$ over 50 runs.
+It shows that if we use a large learning rate like $10^{-2}$ for weight optimization, the VNI of
+over 70\% of hidden layers are highly intensified in 10 updates.
+The dynamic of the VNI intensification starts from the output layer, and then propagated toward the
+input layer in an infection-like behavior. 
+That is, the vanishing nodes problem occurs with large learning rate, and if it occurs, most of the
+hidden layers will be effected.
+
 In Figure \ref{fig:sec5_sim2}, we present the pairwise averaged squared correlation coefficients
 $\rho_{ij}^2$ via its color.
-The architecture is defined with $L=100$, $N=500$, tanh activation and scaled Gaussian initialization.
+The architecture is defined with $L=100$, $N=500$, $tanh$ activation and scaled Gaussian initialization.
 Random samples from the distribution $\mathbf{x}_0\sim Gaussian(\mu_x=0, \sigma^2_x=0.1)$
 with batch size 1000 are used as the input data, and the same distribution is used as the output gradients. 
 The network is trained by SGD optimization with learning rate $=10^{-2}$.
@@ -230,13 +259,41 @@ $N=500$ is large relative to the network depth $L=100$.
 \input{img/Sec5/sim1/sec5sim1.tex}
 
 %%% FIGURE %%%
+\input{img/Sec5/sim1/sec5sim15.tex}
+
+%%% FIGURE %%%
 \input{img/Sec5/sim2/sec5sim2.tex}
 
 
 
 \section{Representation power vanishes as the network goes deeper} \label{repr_general}
 
-%Recent works have put emphasis on the depth of a neural network, since the \textit{width} of a neural network also matters.
+The phenomena that the representation power of a deep network vanishes as its depth gets larger is shown
+in this section.
+Recent works \cite{mft:expo, expressive, linear_regions, expr_power, relu_understand,
+relu_benifit, relu_approx} put emphasis on the benifit of increasing the depth of a neural network,
+and claim that the representation power of a neural network grows exponentially as its depth. 
+However, the representation power discussed in previous results is mainly the theoretical upper bound of
+all variable space.
+Practically, it has small probability for the representation power to reach the upper bound when
+the weight matrices are randomly initialized.
+In the following, we will show that if the weight matrices are drawn from a non-orthogonal
+probability distribution (such as the normal distribution and the uniform distribution), the
+representation power will vanish as the depth gets larger.
+
+The VNI $R_{sq}$ has been defined in \eqref{rsq_def} to measure the correlation between the output nodes of
+a network, and hence the VNI can be viewed as a measurement of the level of redundancy.
+We can simply use the VNI $R_{sq}$ as an approximation of the ratio of redunt nodes, and the number of 
+effective nodes can be approximated as $N\cdot(1-R_{sq})+1$, that is, one node along with other working
+(non-redundant) nodes.
+Because the representation power is closely related to the effective number of network nodes, the VNI
+$R_{sq}$ can provide an estimation of the representation power.
+ 
+In Figure \ref{fig:repr_general}, 
+
+In Table \ref{dead_table},
+
+%, since the \textit{width} of a neural network also matters.
 %According to the "universal approximation theorem" proved by \cite{universal}, a single hidden layer with a finite number of neurons can approximate continuous functions on compact subsets.
 %That is, the number of neurons in a network is closely related to its representation power, which is .
 
@@ -245,11 +302,14 @@ $N=500$ is large relative to the network depth $L=100$.
 %That is, in the worst case, all of hidden nodes or output nodes are so correlated that if we remove the redundant nodes, the number of remaining nodes are much less than the original network width.
 %Therefore, we name this phenomena as the \textit{vanishing node problem}.
 
+\section{The effect of the orthogonal weight matrices to the representation power} \label{repr_orthogonal}
+
+\section{Representation power of residual-like architectures} \label{repr_residual}
 
 
 \begin{figure}[h]
     \centering
-    \newcommand{\myWidth}{0.48\textwidth}
+    \newcommand{\myWidth}{0.9\textwidth}
     \begin{subfigure}{\myWidth}
       \centering
       \caption{Network depth $L\in[1, 10000]$}
@@ -263,7 +323,7 @@ $N=500$ is large relative to the network depth $L=100$.
       \includegraphics[width=1.0\linewidth]{500_layer_rsq}
       \label{fig:repr_general_b}
     \end{subfigure}%
-    \caption[The initial $R_{sq}$ increases to 1 as the network goes deeper.]{
+    \caption[The initial $R_{sq}$ of Gaussian initialized networks.]{
     }
     \label{fig:repr_general}
 \end{figure}
@@ -271,7 +331,7 @@ $N=500$ is large relative to the network depth $L=100$.
 
 \begin{figure}[h]
     \centering
-    \newcommand{\myWidth}{0.48\textwidth}
+    \newcommand{\myWidth}{0.9\textwidth}
     \begin{subfigure}{\myWidth}
       \centering
       \caption{Network depth $L\in[1, 10000]$}
@@ -285,11 +345,28 @@ $N=500$ is large relative to the network depth $L=100$.
       \includegraphics[width=1.0\linewidth]{500_o_layer_rsq}
       \label{fig:repr_orthogonal_b}
     \end{subfigure}%
-    \caption[The initial $R_{sq}$ increases to 1 as the network goes deeper.]{
+    \caption[The initial $R_{sq}$ of orthogonal initialized networks.]{
     }
     \label{fig:repr_orthogonal}
 \end{figure}
 
-\section{The effect of the orthogonal weight matrices to the representation power} \label{repr_orthogonal}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|r|}
+    \hline
+        Architecture&Weight initialization.&Activation&Maximum depth\\\hline
+        \multirow{6}{*}{Feed-forward network} & \multirow{3}{*}{Scaled Gaussian} & tanh & 4243\\\cline{3-4}
+         &  & linear & 2606\\\cline{3-4}
+         &  & relu   & 262 \\\cline{2-4}
+         & \multirow{3}{*}{Orthogonal} & tanh   & $>10000$\\\cline{3-4}
+         &  & linear & $>10000$\\\cline{3-4}
+         &  & relu   & 325\\\hline
+         \multirow{3}{*}{Residual network} & \multirow{3}{*}{Scaled Gaussian} & tanh   & $>10000$\\\cline{3-4}
+         &  & linear & $>10000$\\\cline{3-4}
+         &  & relu   & $>10000$\\\hline
+    \end{tabular}
+    \caption[The maximum depth for different architectures and initializations]
+    {The maximum depth for representation power.}
+    \label{dead_table}
+\end{table}
 
-\section{Representation power of residual-like architectures} \label{repr_residual}
