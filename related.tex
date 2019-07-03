@@ -1,16 +1,38 @@
 \chapter{Related Work}
 \label{related}
 
+\section{Difficulties in training deep nerual networks}
+\label{rel:difficulty}
 Problems in the training of deep neural networks have been encountered in several studies.
 For example, \cite{xavier, he} investigated vanishing/exploding gradient propagation and gave weight initialization methods as the solution. \cite{evop} suggested that vanishing/exploding gradients might relate to the sum of the reciprocals of the hidden layer widths.
 \cite{opt_prob, saddle} stated that saddle points are more likely than local minima to be a problem for training deep neural networks.
 \cite{degrade1, degrade2, resnet1} exposed the \textit{degradation} problem: the performance of a deep neural network degrades as the depth increases.
 
-The correlation between the nodes of hidden layers within a deep neural network is the main focus of this paper, and several kinds of correlations have been discussed in the literature.
-%, while several kinds of correlations have been discussed. In this work, we proposed a different problem related to the correlation between two nodes in a hidden layer.
-\cite{mft:info} surveyed the propagation of the correlation between two different inputs after several layers.
-\cite{whiten1, whiten2} suggested that the input features must be whitened (i.e., zero-mean, unit variances and uncorrelated) to achieve a faster training speed.
-
 Dynamical isometry is one of the conditions that make ultra-deep network training more feasible.
 \cite{mft:linear} reported dynamical isometry to theoretically ensure depth-independent learning speed.
 \cite{mft:sigmoid, mft:spectral} suggested several ways to achieve dynamical isometry for various settings of network architecture, and \cite{mft:cnn, mft:rnn} practically trained ultra-deep networks in various tasks.
+
+\section{Representation power of deep neural network}
+\label{rel:representation}
+Representation power has been surveyed in many previous works.
+According to the "universal approximation theorem" proved by \cite{universal}, a single hidden layer
+with a finite number of neurons can approximate any continuous function on compact subsets.
+However, \cite{res_ensemble} states that the network depth of neural networks governs the 
+representation power and the training performance.
+Theoretically, \cite{mft:expo, expressive, linear_regions, expr_power} claim the expressive complexity of a network grows exponentially with 
+its depth but not its width.
+For ReLU networks, \cite{relu_understand, relu_benifit, relu_approx} show that the minimal number of
+nodes to aprroximate any continuous function can be reduced if the depth of the network is larger.
+% As in \cite{deep_conv}, \cite{vgg} and \cite{net_in_net} add the additional 
+
+The correlation between the nodes of hidden layers within a deep neural network is our main focus.
+As we know, the correlation between nodes implies the similarity between them, and high degree of
+similarity between nodes produces redundancy, hence reduce the representation power of the network.
+Several kinds of correlations have been discussed in the literature.
+%, while several kinds of correlations have been discussed.
+In this work, we proposed a different problem related to the correlation between two nodes in a hidden layer.
+\cite{mft:info} surveyed the propagation of the correlation between two different inputs after several layers.
+\cite{whiten1, whiten2} suggested that the input features must be whitened (i.e., zero-mean, unit variances and uncorrelated) to achieve a faster training speed.
+
+
+

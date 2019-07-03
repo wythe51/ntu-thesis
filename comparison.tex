@@ -1,4 +1,6 @@
-\chapter{Comparison with exploding/vanishing gradients} \label{compare}
+\chapter{Variance propagation of deep neural networks} \label{compare}
+
+\section{Comparison with exploding/vanishing gradients} \label{comp:compare}
 
 In this section, we explore whether the \textit{vanishing node} phenomenon arises from the problem of  exploding/vanishing gradients. Exploding/vanishing gradients in deep neural networks are a problem regarding the scale of forward-propagated signals and back-propagated gradients that exponentially explode/vanish as the networks grows deeper. We perform a theoretical analysis of exploding/vanishing gradients and show analytically the difference between them.
 %it and the \textit{vanishing node} phenomena.
@@ -85,6 +87,8 @@ where we can evaluate $Var[\mathbf{x}_{l-1}]$ and $Var\Big[\frac{\partial Cost}{
 
 However, \eqref{rsq_moment} shows that VNI ($R_{sq}$) may still accumulate with the network depth even if $(\sigma_w^2\mu_1)=1$. That is, the characteristic of the vanishing nodes becomes evident  when $(\mu_2/\mu_1^2-1-s_1)$ is large, whereas vanishing/exploding gradients occurs when $(\sigma_w^2\mu_1)$ is far from 1. If the network's initialization parameter is appropriately set such that $(\sigma_w^2\mu_1)$ is close to 1, $R_{sq}$ may still accumulate due to the network depth, the activation function, and the weight distribution. Therefore, from \eqref{rsq_moment} and \eqref{weight_var}, it is clear that the problem of vanishing nodes  may occur regardless of  exploding/vanishing gradients.
 
+\section{Norm-preserving weight initialization} \label{comp:init}
+
 %In Figure \ref{fig:sec6_theo1}, we provide a schematic diagram for evaluating architectures of deep neural networks. The network depth $L$, the network width $N$, the weight initialization scale $\sigma_w^2$, the moments associated with weight $s_1$ and the moments associated with activation $\mu_k$ are taken into consideration. For the horizontal axis, we use the metric $(\sigma_w^2\mu_1)$ to determine whether a network will explode or vanish when the depth $L$ goes deeper. If a network has $(\sigma_w^2\mu_1)=1$, then its scales of gradients will neither vanish nor explode even if the depth $L$ becomes larger. Otherwise, the further $(\sigma_w^2\mu_1)$ is from $1$, the more severe gradients will exponentially explode/vanish. For the vertical axis, we take $R_{sq}$ as the metric. From \eqref{rsq_moment}, we know that $R_{sq}$ is decided by $L$, $N$, $\mu_k$ and $s_1$. If $R_{sq}$ can reach exactly $1/N$, then by \eqref{rsq_moment}, we can show  that correlations of output layer nodes will never accumulate even if the depth $L$ increases. Therefore by Figure \ref{fig:sec6_theo1}, we can determine whether a neural network with specific parameters will suffer from exploding/vanishing gradients and vanishing nodes or not.
 
 % For example in previous works on ultra-deep neural networks, \cite{mft:cnn} chose an activation function that has $\mu_2/\mu_1^2\approx1$ and initialized the weights via appropriately-scaled orthogonal matrices (\cite{mft:linear}) which have $s_1=0$  (from \cite{mft:sigmoid}) and $(\sigma_w^2\mu_1)=1$. Hence the VNI $R_{sq}$ of the network will reach $1/N$, which will not accumulate as the depth $L$ increases according to \eqref{rsq_eigen}. The parameter setting of the network is located at the intersection of vertical and horizontal dashed line in Figure \ref{fig:sec6_theo1}, and thus the network does not suffer from vanishing/exploding gradients and vanishing nodes.
@@ -92,6 +96,7 @@ However, \eqref{rsq_moment} shows that VNI ($R_{sq}$) may still accumulate with 
 
 % \input{img/Sec6/theo1/sec6theo1.tex}
 
+\section{Batch normalization results in exploding gradients} \label{comp:bn}
 
 % According to \eqref{rsq_eigen}, if $R_{sq}$ gets larger, then $m_2$ is also larger compared to $m_1^2$. Recall that $m_i$ is the $i$-th moment of eigenvalues of $\mathbf{JJ}^T$, so the variance of eigenvalues of $\mathbf{JJ}^T$ is $m_2-m_1^2$. Also, eigenvalues of $\mathbf{JJ}^T$ is equivalent to the squared singular values of $\mathbf{J}$. Thus, if the variance of eigenvalues of $\mathbf{JJ}^T$ is too big, the Jacobian $\mathbf{J}$ will become ill-conditioned. Therefore, we can relate $R_{sq}$ to the condition number of Jacobian $\mathbf{J}$, and thus we can link the vanishing node problem to the ill-conditioned Jacobian, which is emphasized in previous works (\cite{mft:sigmoid, mft:spectral, mft:linear}).
 
@@ -99,6 +104,7 @@ However, \eqref{rsq_moment} shows that VNI ($R_{sq}$) may still accumulate with 
 
 % Therefore, we can say that dynamical isometry is not only related to the \textit{learning speed} (\cite{mft:linear}), but also linked to the node correlation $R_{sq}$, which is closely connected with the \textit{learning capability} and the \textit{representation power} of a deep neural network.
 
+\section{T-normalization: A novel normalization method for deep networks} \label{comp:tn}
 
 %% Below are our numerical results about layer-wise forward and backward variances. As the simulation we have performed in Section 5, we can see that the variances are neither exploding nor vanishing though the nodes in the network are already highly correlated.
 

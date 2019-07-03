@@ -94,6 +94,8 @@ VNI calculates the weighted average of the squared correlation coefficients $\rh
 Otherwise, if all of the output nodes are highly correlated, then all squared correlation coefficients $\rho_{ij}^2$ will be nearly 1, and therefore $R_{sq}$ will reach the maximum value of $1$.
 Note that the weights $\sigma_i^2\sigma_j^2$ in the weighted average can be interpreted as the importance of the output-layer nodes $i$ and $j$. If all of the output layer nodes have equal variances, VNI $R_{sq}$ is simply reduced to the average of the squared correlation coefficients $\rho_{ij}^2$.
 
+%%% FIGURE %%%
+\input{img/Sec4/sim1/sec4sim1.tex}
 
 %%% FIGURE %%%
 \input{img/Sec4/sim2/sec4sim2.tex}
@@ -247,26 +249,47 @@ $N=500$ is large relative to the network depth $L=100$.
 
 \begin{figure}[h]
     \centering
-    \newcommand{\myWidth}{0.88\textwidth}
+    \newcommand{\myWidth}{0.48\textwidth}
     \begin{subfigure}{\myWidth}
       \centering
       \caption{Network depth $L\in[1, 10000]$}
-      \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{10000_layer_rsq}
+      \includegraphics[width=1.0\linewidth]{10000_layer_rsq}
       \label{fig:repr_general_a}
     \end{subfigure}
     
     \begin{subfigure}{\myWidth}
       \centering
       \caption{Network depth $L\in[1, 500]$}
-      \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{500_layer_rsq}
+      \includegraphics[width=1.0\linewidth]{500_layer_rsq}
       \label{fig:repr_general_b}
     \end{subfigure}%
-    
     \caption[The initial $R_{sq}$ increases to 1 as the network goes deeper.]{
     }
     \label{fig:repr_general}
 \end{figure}
 
-\section{Representation power of networks with orthogonal weight matrices} \label{repr_orthogonal}
 
-\section{Representation power of architectures with residual connections} \label{repr_residual}
+\begin{figure}[h]
+    \centering
+    \newcommand{\myWidth}{0.48\textwidth}
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{Network depth $L\in[1, 10000]$}
+      \includegraphics[width=1.0\linewidth]{10000_o_layer_rsq}
+      \label{fig:repr_orthogonal_a}
+    \end{subfigure}
+    
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{Network depth $L\in[1, 500]$}
+      \includegraphics[width=1.0\linewidth]{500_o_layer_rsq}
+      \label{fig:repr_orthogonal_b}
+    \end{subfigure}%
+    \caption[The initial $R_{sq}$ increases to 1 as the network goes deeper.]{
+    }
+    \label{fig:repr_orthogonal}
+\end{figure}
+
+\section{The effect of the orthogonal weight matrices to the representation power} \label{repr_orthogonal}
+
+\section{Representation power of residual-like architectures} \label{repr_residual}
