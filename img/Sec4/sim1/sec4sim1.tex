@@ -1,27 +1,141 @@
 \begin{figure}
-\centering
-\newcommand{\myWidth}{.95\textwidth}
-\begin{subfigure}{\myWidth}
   \centering
-  \caption{Network width $N=6$}
-  \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-HardTanhWidth6}
-  \label{fig:sec4_sim1_a}
-\end{subfigure}%
-
-\begin{subfigure}{\myWidth}
-  \centering
-  \caption{Network width $N=50$}
-  \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-HardTanhWidth50}
-  \label{fig:sec4_sim1_b}
-\end{subfigure}%
-
-\begin{subfigure}{\myWidth}
-  \centering
-  \caption{Network width $N=100$}
-  \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-HardTanhWidth100}
-  \label{fig:sec4_sim1_c}
-\end{subfigure}%
-
-\caption[Scatter plots of output layer nodes.]{To show the output layer correlation, we plot the scatter plots with 1000 data points of 6 random sampled output layer nodes of the network with network depth $L=100$, $Hard\text{-}Tanh$ activation and scaled-Gaussian weight initialization. The network width $N=6, 50, 100$ from top to bottom respectively. We can see that correlations are much higher when the network width $N$ is small.}
-\label{fig:sec4_sim1}
+  \newcommand{\myWidth}{.95\textwidth}
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=6$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-LinearWidth6}
+    \label{fig:sec4_sim11_a}
+  \end{subfigure}%
+  
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=50$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-LinearWidth50}
+    \label{fig:sec4_sim11_b}
+  \end{subfigure}%
+  
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=100$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-LinearWidth100}
+    \label{fig:sec4_sim11_c}
+  \end{subfigure}%
+  
+\caption[Scatter plots for the $linear$ activation and the scaled-Gaussian initialization.]
+{To show the output layer correlation, we plot the scatter plots of 6 random sampled output
+layer nodes. The network is fed with 1000 random generated data points.
+The network architecture is defined with network depth $L=100$,
+$linear$ activation and scaled-Gaussian weight initialization. The network width
+$N=6, 50, 100$ from top to bottom. We can see that correlations are much higher
+when the network width $N$ is small.}
+\label{fig:sec4_sim11}
 \end{figure}
+
+
+
+\begin{figure}
+  \centering
+  \newcommand{\myWidth}{.95\textwidth}
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=6$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-HardTanhWidth6}
+    \label{fig:sec4_sim1_a}
+  \end{subfigure}%
+  
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=50$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-HardTanhWidth50}
+    \label{fig:sec4_sim1_b}
+  \end{subfigure}%
+  
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=100$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-HardTanhWidth100}
+    \label{fig:sec4_sim1_c}
+  \end{subfigure}%
+  
+  \caption[Scatter plots for the $Hard\text{-}Tanh$ activation and the scaled-Gaussian initialization.]
+  {To show the output layer correlation, we plot the scatter plots of 6 random sampled output
+  layer nodes. The network is fed with 1000 random generated data points.
+  The network architecture is defined with network depth $L=100$,
+  $Hard\text{-}Tanh$ activation and scaled-Gaussian weight initialization. The network width
+  $N=6, 50, 100$ from top to bottom. We can see that correlations are much higher
+  when the network width $N$ is small.}
+  \label{fig:sec4_sim1}
+  \end{figure}
+
+
+
+\begin{figure}
+  \centering
+  \newcommand{\myWidth}{.95\textwidth}
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=6$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-ReluWidth6}
+    \label{fig:sec4_sim12_a}
+  \end{subfigure}%
+  
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=50$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-ReluWidth50}
+    \label{fig:sec4_sim12_b}
+  \end{subfigure}%
+  
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=100$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-ReluWidth100}
+    \label{fig:sec4_sim12_c}
+  \end{subfigure}%
+  
+\caption[Scatter plots for the $ReLU$ activation and the scaled-Gaussian initialization.]
+{To show the output layer correlation, we plot the scatter plots of 6 random sampled output
+layer nodes. The network is fed with 1000 random generated data points.
+The network architecture is defined with network depth $L=100$,
+$ReLU$ activation and scaled-Gaussian weight initialization. The network width
+$N=6, 50, 100$ from top to bottom. We can see that correlations are much higher
+when the network width $N$ is small.}
+\label{fig:sec4_sim12}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \newcommand{\myWidth}{.95\textwidth}
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=6$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-UniformWidth6}
+    \label{fig:sec4_sim13_a}
+  \end{subfigure}%
+  
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=50$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-UniformWidth50}
+    \label{fig:sec4_sim13_b}
+  \end{subfigure}%
+  
+  \begin{subfigure}{\myWidth}
+    \centering
+    \caption{Network width $N=100$}
+    \adjincludegraphics[width=1.0\linewidth,trim={0 0 0 0.8cm},clip]{img/Sec4/sim1/InitialCorrelation-UniformWidth100}
+    \label{fig:sec4_sim13_c}
+  \end{subfigure}%
+  
+\caption[Scatter plots for the $linear$ activation and the scaled-uniform initialization.]
+{To show the output layer correlation, we plot the scatter plots of 6 random sampled output
+layer nodes. The network is fed with 1000 random generated data points.
+The network architecture is defined with network depth $L=100$,
+$linear$ activation and scaled-Uniform weight initialization. The network width
+$N=6, 50, 100$ from top to bottom. We can see that correlations are much higher
+when the network width $N$ is small.}
+\label{fig:sec4_sim13}
+\end{figure}
+
+

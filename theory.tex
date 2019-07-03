@@ -36,17 +36,21 @@ Great similarity indicates redundancy.
 If nodes of hidden layers exhibit great similarity, the effective number of nodes will be much lower than the original network width.
 Therefore, we call this phenomena \textit{Vanishing Node Problem}.
 
-Figure \ref{fig:sec4_sim1} provides an intuitive view of the vanishing node problem. The network
-architecture is build with depth $L=100$, width $N\in\{6, 50, 100\}$and activation function $Hard$-$Tanh$/
-The weight matrices are initialized with scaled-Gaussian initialization (further discussion will provide
-in Section \ref{comp:init}) and the biases are set to zeros. The network is fed with 1000 random generated
+Figure \ref{fig:sec4_sim11}, \ref{fig:sec4_sim1}, \ref{fig:sec4_sim12} and \ref{fig:sec4_sim13}
+provide intuitives view of the vanishing node problem. The network
+architecture is build with depth $L=100$, width $N\in\{6, 50, 100\}$ and activation functions
+include $Linear$, $Hard$-$Tanh$ and $ReLU$.
+The weight matrices are initialized with scaled-Gaussian and scaled-uniform initialization
+(further discussion will provide in Section \ref{comp:init}) and the biases are set to zeros.
+The network is fed with 1000 random generated
 data points drawn from the zero-mean white Gaussian distribution. After the forward propagation, we choose
 6 output nodes from the output layer to plot scatter plots with the first output node.
-It is obvious that the neurons in Figure \ref{fig:sec4_sim1_a} are so linearly correlated that the
-actual number of effective nodes is 1, while the neurons in Figure \ref{fig:sec4_sim1_c} seems to be
-uncorrelated to each others.
-It implies that if the network width $N$ is relatively small (compared to the network depth $L$), the
-output nodes may become highly correlated, and hence results in the vanishing node problem.
+It is obvious that the neurons in four Subfigures (a) are so linearly correlated that the
+actual number of effective number of the six nodes is 1, while the neurons in four Subfigures (c)
+seem to be uncorrelated to each others.
+It implies that if the network width $N$ is relatively small (compared to the network depth
+$L$), the output nodes may become highly correlated, and hence results in the vanishing node
+problem.
 
 % \input{img/Sec3/sim1/sec3sim1.tex}
 
@@ -153,9 +157,19 @@ where $\lambda_k$ is the $k$-th eigenvalue of $\mathbf{JJ}^T$, and $m_i$ is the 
 %According to the free probability theory described by \cite{mft:spectral}, we consider the expansion of the S-transform  associated with the weights and we define $s_k$ as the $k$-th moment of S-transform. Also, we reuse the definition $\mu_k$ as $\int\mathcal{D}h[\phi'(\sigma_hh)]^{2k}$ where the standard deviation of the pre-activation is defined as $\sigma_h$.
 % Since $\mathbf{D}$ is a diagonal matrix, we can rewrite $\mathbf{D}^T\mathbf{D}$ as $\mathbf{D}^2$. 
 
-In \eqref{rsq_eigen}, we show that  $R_{sq}$ is related to the expected moments of the eigenvalues of $\mathbf{JJ}^T$. Because the moments of the eigenvalues of $\mathbf{JJ}^T$ have been analyzed in previous studies \cite{mft:spectral}, we can leverage the recent results  by \cite{mft:spectral}: $m_1=(\sigma_w^2\mu_1)^L$, and $m_2=(\sigma_w^2\mu_1)^{2L}L\big(\frac{\mu_2}{\mu_1^2}+\frac{1}{L}-1-s_1\big)$,
-where $\sigma_w^2/N$ is the variance of the initial weight matrices, $s_1$ is the first moment of the series expansion of the S-transform associated with the weight matrices, and $\mu_k$ are the $k$-th moments of series expansion of the moment generating function associated with activation functions.
-If we insert the expressions of $m_1$ and $m_2$ into \eqref{rsq_eigen}, we can obtain an approximation of the expected VNI:
+In \eqref{rsq_eigen}, we show that  $R_{sq}$ is related to the expected moments of the
+eigenvalues of $\mathbf{JJ}^T$. Because the moments of the eigenvalues of $\mathbf{JJ}^T$
+have been analyzed in previous studies \cite{mft:spectral}, we can leverage the recent
+results by \cite{mft:spectral}: $m_1=(\sigma_w^2\mu_1)^L$, and
+$m_2=(\sigma_w^2\mu_1)^{2L}L\Big(\frac{\mu_2}{\mu_1^2}+\frac{1}{L}-1-s_1\Big)$,
+where $\sigma_w^2/N$ is the variance of the initial weight matrices, $s_1$ is the first
+moment of the series expansion of the S-transform associated with the weight matrices, and
+$\mu_k$ are the $k$-th moments of series expansion of the moment generating function
+associated with activation functions.
+The derivation of $\mu_k$ and $s_1$ are given by \cite{mft:spectral}, and the results are
+provided in Table \ref{table:mu} and \ref{table:s}.
+If we insert the expressions of $m_1$ and $m_2$ into \eqref{rsq_eigen}, we can obtain an
+approximation of the expected VNI:
 
 \begin{equation}
     R_{sq}\approx \frac{L}{N}\Big(\frac{\mu_2}{\mu_1^2}+\frac{1}{L}-1-s_1\Big)
@@ -176,8 +190,6 @@ One thousand data points with the distribution $\mathbf{x}_0\sim Gaussian(\mu_x=
 In each network architecture, the weights are initialized with scaled-Gaussian distribution \cite{xavier} of various random seeds for 100 runs.
 The details of the scaled-Gaussian initialization are provided in Section \ref{comp:init}.
 The $R_{sq}$ calculated from \eqref{rsq_def} is then recorded to compute the mean and the standard deviation with respect to various network depths $L$.
-%and then record the mean and the standard deviation of $R_{sq}$ via \eqref{rsq_def} as the vertical axis.
-%The horizontal axis is the network depth $L$. 
 The results are shown in Figure \ref{fig:sec4_sim2} as the blue and green lines denoted “Simulation i.i.d. inputs” and "Simulation MNIST dataset." The red line denoted as “Theoretical” is the result calculated from \eqref{rsq_moment}. This experiment demonstrates that VNI expressed in terms of the network parameters in \eqref{rsq_moment} is very close to the original definition in \eqref{rsq_def}.
 Similar results are obtained with different activations (e.g., Linear, ReLU) and different weight initialization (e.g., scaled uniform distribution).
 
@@ -289,9 +301,40 @@ effective nodes can be approximated as $N\cdot(1-R_{sq})+1$, that is, one node a
 Because the representation power is closely related to the effective number of network nodes, the VNI
 $R_{sq}$ can provide an estimation of the representation power.
  
-In Figure \ref{fig:repr_general}, 
+In Figure \ref{fig:repr_general}, the network width $N$ is set to $500$ and the network depth
+$L$ ranges from $1$ to $10000$. The network is fed with 1000 randomly generated data point
+drawn from zero-mean white Gaussian distribution with standard deviation equals to $0.1$.
+The VNI $R_{sq}$ are evaluated according to the definition in \eqref{rsq_def}.
+The weights are initialized with scaled-Gaussian distribution (\cite{xavier, he}), which
+will be discussed in Section \ref{comp:init}, and the biases are initialized to zeros.
+The activation functions of the networks include tanh, ReLU and linear. Note that for the
+ReLU case, we add the layer normalization (\cite{layer_norm}) blocks between hidden layers
+in order to prevent the node values from converging to zeros. If the node values converges
+to zeros, the result of \eqref{rsq_def} become undefined.
+Also note that since in our case, the layer
+normalization only rescale the node values, it will not effect the value of VNI evaluated
+from \eqref{rsq_def}, which is a scale-invariant metric.
+The simulation is repeated for 20 times, and the medians of the VNI over 20 runs are plot as
+the solid lines, and the boundaries of the colored regions are the first and the third
+quartiles of the VNI. It is shown that for a feed-forward architecture under a non-orthogonal
+initialization, the initial VNI $R_{sq}$ increases to 1 as $L$ gets larger. That is,
+the representation power vanishes as the network goes deeper. The VNI of ReLU activation,
+especially, grows in the steepest with the network depth, and the reason can be observed from
+the \eqref{rsq_moment}, Table \ref{table:mu} and Table \ref{table:s}. The $R_{sq}$ 
+approximated by \eqref{rsq_moment} for ReLU activation is $(2L+1)/N$ while the $R_{sq}$
+for linear and tanh activation is nearly $(L+1)/N$.
+Therefore, the ReLU activation suffers more from the vanishing representation power.
 
-In Table \ref{dead_table},
+We define the "maximal depth" as the maximal $L$ such that in less than half of 20
+runs(i.e. 10 runs), the approximated number of effective nodes achieve greater than 1.
+The maximal depths for different activation functions, weight initializations and network
+architectures are shown in Table \ref{dead_table}. It shows that the maximal depth of ReLU
+activation is much less than linear and tanh activations. It has been stated
+\cite{relu_sparse} that the ReLU activation provides a sparse and distributed representation
+That is, the ReLU activation selects half of neurons as the active nodes, which may reduce the
+effective number of nodes. Since the maximal depth is closely related to the effective number
+of nodes, it provide another aspect explaining that the representation power vansihes
+faster for the ReLU activation.
 
 %, since the \textit{width} of a neural network also matters.
 %According to the "universal approximation theorem" proved by \cite{universal}, a single hidden layer with a finite number of neurons can approximate continuous functions on compact subsets.
@@ -304,7 +347,59 @@ In Table \ref{dead_table},
 
 \section{The effect of the orthogonal weight matrices to the representation power} \label{repr_orthogonal}
 
+The orthogonal weight initialization \cite{mft:linear} is one of methods that train a very
+deep neural network successfully. In \cite{mft:cnn}, the trainable depth of a convolutional
+neural network with orthogonal initialized weights can reach over 10000 layers. In this
+section, we will show that the orthogonal weight matrices can prevent the representation
+power of networks from vanishing.
+
+In Figure \ref{fig:repr_orthogonal}, similar settings to Figure \ref{fig:repr_general} are 
+used excluding the weights, which are initialized with scaled-Orthogonal distribution
+(\cite{mft:linear}, further discussion is provided in Section \ref{comp:init}). It is shown
+that for a feed-forward architecture under the orthogonal initialization with linear or tanh
+activation function, the initial VNI $R_{sq}$ remain nearly
+minimum (1/N) even when the network depth $L$ gets larger, and that the VNI of ReLU
+activation increases to 1 as the network goes deeper.
+
+From \eqref{rsq_moment} and Table \ref{table:s}, it can be derived that the approximation of
+the VNI $R_{sq}$ of networks with orthogonal weight matrices is 
+$\Big[\Big(\frac{\mu_2}{\mu_1^2}-1\Big)L+1\Big]\Big/N$. That is, if an activation function
+such that $\frac{\mu_2}{\mu_1^2}\sim1$ is chosen, then the VNI $R_{sq}$ can remain
+in a lower level even when the network goes much deeper. Therefore, it explains that the 
+network with linear and tanh activation has a constant VNI $R_{sq}$ with respect to the
+network depth, and the VNI $R_{sq}$ for the network with ReLU activation still increases
+to 1.
+
+To provide a more intuitive explanation, we first consider the linear activation case.
+Because the product of orthogonal matrices remain an orthogonal matrix, the input-output
+correlation for a 10000-layer network with orthogonal weights can be reduced to a 1-layer
+shallow network with a single orthogonal weight. Therefore for such a network setting, the
+representation power remain the same even if the network depth $L$ goes arbitrarily large.
+
+Consider the ReLU activation network with orthogonal weight matrices. The output layer is
+$\mathbf{x}_L=\phi(\mathbf{W}_L\dots\phi(\mathbf{W}_2\phi(\mathbf{W}_1\mathbf{x}_0)))$.
+Analytically, the ReLU activation function $\phi(\cdot)$ can be taken as a matrix
+$\mathbf{U}_l$ with all the off-diagonal elements equal to zeros and the diagonal elements
+$\in\{0, 1\}$, which are dependent to the input data. That is, the output layer can be
+expressed as
+$\mathbf{x}_L=(\mathbf{U}_L\mathbf{W}_L)\dots(\mathbf{U}_2\mathbf{W}_2)(\mathbf{U}_1\mathbf{W}_1)\mathbf{x}_0$.
+Note that the matrices $(\mathbf{U}_l\mathbf{W}_l)$ can be viewed as the random samples
+from the row vectors of the orthogonal matrix $\mathbf{W}_l$.
+Since the random sample operation is equivalent to the random projection onto the coordinate
+hyperplanes, the orthogonal property of $\mathbf{W}_l$ will be no longer kept after the
+multiplication with $\mathbf{U}_l$.
+Therefore, the representation power of the network faced the same problem as stated in
+Section \ref{repr_general}.
+
+The maximal depths for different activation functions with orthogonal weight initializations
+are also shown in Table \ref{dead_table}. It shows that the maximal depths of linear and tanh
+activations are more than 10000 layers, but that of ReLU activation is much small, which is
+consistent to our analysis.
+
 \section{Representation power of residual-like architectures} \label{repr_residual}
+
+
+
 
 
 \begin{figure}[h]
@@ -324,6 +419,18 @@ In Table \ref{dead_table},
       \label{fig:repr_general_b}
     \end{subfigure}%
     \caption[The initial $R_{sq}$ of Gaussian initialized networks.]{
+        The network width $N$ is set to $500$ and the network depth $L$ ranges from $1$ to
+        $10000$. The network is fed with 1000 randomly generated data point drawn from 
+        zero-mean white Gaussian distribution with standard deviation equals to $0.1$.
+        The VNI $R_{sq}$ are evaluated according to the definition in \eqref{rsq_def}.
+        The weights are initialized with scaled-Gaussian distribution (\cite{xavier, he}).
+        The activation functions of the networks include tanh, ReLU and linear.
+        The simulation is repeated for 20 times, and the medians of the VNI over 20 runs
+        are plot as the solid lines, and the boundaries of the colored regions are the first
+        and the third quartiles of the VNI. It is shown that for a feed-forward architecture
+        under a non-orthogonal initialization, the initial VNI $R_{sq}$ increases to 1 as $L$
+        gets larger, and that the VNI of ReLU activation, especially, grows in the steepest
+        with the network depth.
     }
     \label{fig:repr_general}
 \end{figure}
@@ -346,15 +453,78 @@ In Table \ref{dead_table},
       \label{fig:repr_orthogonal_b}
     \end{subfigure}%
     \caption[The initial $R_{sq}$ of orthogonal initialized networks.]{
+        Similar settings to Figure \ref{fig:repr_general} are used excluding the weights,
+        which are initialized with scaled-Orthogonal distribution (\cite{mft:linear}).
+        It is shown that for a feed-forward architecture under the orthogonal initialization
+        with linear or tanh activation function, the initial VNI $R_{sq}$ remain nearly
+        minimum (1/N) even when the network depth $L$ gets larger, and that the VNI of ReLU
+        activation increases to 1 as the network goes deeper.
     }
     \label{fig:repr_orthogonal}
 \end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \newcommand{\myWidth}{0.9\textwidth}
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{Network depth $L\in[1, 10000]$}
+      \includegraphics[width=1.0\linewidth]{10000_r2_layer_rsq}
+      \label{fig:repr_residual_a}
+    \end{subfigure}
+    
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{Network depth $L\in[1, 500]$}
+      \includegraphics[width=1.0\linewidth]{500_r2_layer_rsq}
+      \label{fig:repr_residual_b}
+    \end{subfigure}%
+    \caption[The initial $R_{sq}$ of residual networks.]{}
+    \label{fig:repr_residual}
+\end{figure}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|r|}
+    \hline
+        Activation & $\phi(x)$ & $\mu_k$\\\hline
+        Linear & $x$ & $1$\\\hline
+        ReLU & $[x]_{+}$ & $1/2$\\\hline
+        Hard Tanh & $[x+1]_{+}-[x-1]_{+}-1$ & $erf\Big(\frac{1}{\sqrt{2}\sigma}\Big)$\\\hline
+    \end{tabular}
+    \caption[The $\mu_k$ of different activation functions.]
+    {The $\mu_k$ of different activation functions.
+    The derivation is given by \cite{mft:spectral}.
+    Note that the $\sigma^2$ is the variance of the hidden nodes.
+    It shows that the maximal depth of ReLU activation is much less than linear and tanh
+    activations, and that the orthogonal weights and the residual architecture can improve
+    the maximal depth of networks.}
+    \label{table:mu}
+\end{table}
+
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|r|}
+    \hline
+        Random Matrix $W$ & $s_1$\\\hline
+        Gaussian & $-1$\\\hline
+        Orthogonal & $0$\\\hline
+    \end{tabular}
+    \caption[The $s_1$ of different weight distribution.]
+    {The $s_1$ of different activation functions.
+    The derivation is given by \cite{mft:spectral}.
+    Note that the $s_1$ is invariant to the matrix scale. That is, the results are also
+    suitable for the scaled-Gaussian and the scaled-orthogonal initializations.}
+    \label{table:s}
+\end{table}
 
 \begin{table}[h]
     \centering
     \begin{tabular}{|c|c|c|r|}
     \hline
-        Architecture&Weight initialization.&Activation&Maximum depth\\\hline
+        Architecture&Weight initialization.&Activation&Maximal depth\\\hline
         \multirow{6}{*}{Feed-forward network} & \multirow{3}{*}{Scaled Gaussian} & tanh & 4243\\\cline{3-4}
          &  & linear & 2606\\\cline{3-4}
          &  & relu   & 262 \\\cline{2-4}
@@ -366,7 +536,9 @@ In Table \ref{dead_table},
          &  & relu   & $>10000$\\\hline
     \end{tabular}
     \caption[The maximum depth for different architectures and initializations]
-    {The maximum depth for representation power.}
+    {The maximum depth for representation power. The maximum depth
+    is defined as the maximal $L$ such that in less than half of 20
+    runs(i.e. 10 runs), the approximated number of effective nodes achieve greater than 1.}
     \label{dead_table}
 \end{table}
 
