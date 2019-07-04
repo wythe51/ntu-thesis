@@ -1,6 +1,6 @@
 \chapter{Variance propagation of deep neural networks} \label{compare}
 
-\section{Comparison with exploding/vanishing gradients} \label{comp:compare}
+\section{Comparison of exploding/vanishing gradients and vanishing nodes} \label{comp:compare}
 
 In this section, we explore whether the \textit{vanishing node} phenomenon arises from the problem of  exploding/vanishing gradients. Exploding/vanishing gradients in deep neural networks are a problem regarding the scale of forward-propagated signals and back-propagated gradients that exponentially explode/vanish as the networks grows deeper. We perform a theoretical analysis of exploding/vanishing gradients and show analytically the difference between them.
 %it and the \textit{vanishing node} phenomena.
@@ -94,12 +94,27 @@ when $(\mu_2/\mu_1^2-1-s_1)$ is large, whereas vanishing/exploding gradients occ
 $(\sigma_w^2\mu_1)$ is far from 1. If the network's initialization parameter is appropriately set such
 that $(\sigma_w^2\mu_1)$ is close to 1, $R_{sq}$ may still accumulate due to the network depth, the
 activation function, and the weight distribution. Therefore, from \eqref{rsq_moment} and
-\eqref{weight_var}, it is clear that the problem of vanishing nodes  may occur regardless of 
+\eqref{weight_var}, it is clear that the problem of vanishing nodes may occur regardless of 
 exploding/vanishing gradients.
 
 \section{Norm-preserving weight initialization} \label{comp:init}
 
+In the Section \ref{comp:compare}, it is suggested that $(\sigma_w^2\mu_1)=1$ is the condition to
+prevent the vanishing/exploding gradients problem. Note that the parameter $\mu_1$ is decided by the 
+activation function of the network, and the other parameter $\sigma_w^2$ can be controlled by the
+scale of the initial weight. That is, if the weight matrices are correctly initialized, the
+gradient flow will neither vanish nor explode as the network depth $L$ increases. We call this kind
+of weight initialization method a \textit{"norm-preserving weight initialization"}.
 
+In Table \ref{table:mu}, the norm-preserving $\sigma_w^2$ are provided.
+Note that in Section \ref{initial}, the variances of weight matrices are defined as $\sigma_w^2/N$.
+Therefore the norm-preserving weight variance of ReLU activation, for example, is $2/N$.
+For the Gaussian distribution, we can simply set the mean to zero and modify the standard deviation
+to meet the norm-preserving condition, and for the uniform distribution, the support should be set to 
+$\Big[-\sqrt{3\sigma_w^2/N}, \sqrt{3\sigma_w^2/N}\Big]$ to achieve the zero-mean and the
+norm-preserving property.
+For the orthogonal initialization, the zero-mean is already achieved, and the $L_2$-norm of the
+orthogonal basis should be set to $\sigma_w$.
 
 \section{The two obstacles for training deep nerual networks} \label{comp:obstacles}
 \input{img/Sec6/theo1/sec6theo1.tex}

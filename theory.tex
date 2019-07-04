@@ -592,16 +592,20 @@ power from intensely vanishing. Similar results can be observed in Figure \ref{f
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{|l|l|r|}
+    \begin{tabular}{|l|l|r|r|}
     \hline
-        Activation & $\phi(x)$ & $\mu_k$\\\hline
-        Linear & $x$ & $1$\\\hline
-        ReLU & $[x]_{+}$ & $1/2$\\\hline
-        Hard Tanh & $[x+1]_{+}-[x-1]_{+}-1$ & $erf\Big(\frac{1}{\sqrt{2}\sigma}\Big)$\\\hline
+        Activation & $\phi(x)$ & $\mu_k$ & Norm-preserving $\sigma_w^2$\\\hline
+        Linear & $x$ & $1$ & $1$\\\hline
+        ReLU & $[x]_{+}$ & $1/2$ & $2$\\\hline
+        Hard Tanh & $[x+1]_{+}-[x-1]_{+}-1$ & $erf\Big(\frac{1}{\sqrt{2}\sigma}\Big)$
+        & $erf\Big(\frac{1}{\sqrt{2}\sigma}\Big)^{-1}$\\\hline
     \end{tabular}
     \caption[The $\mu_k$ of different activation functions.]
-    {The $\mu_k$ of different activation functions.
+    {The $\mu_k$, the $k$-th moments of series expansion of the moment generating function
+    associated with activation functions, is provided in this table.
     The derivation is given by \cite{mft:spectral}.
+    The rightmost column are the norm-preserving $(\sigma_w^2)$, which will be further
+    discussed in \ref{comp:init}.
     Note that the $\sigma^2$ is the variance of the hidden nodes.
     It shows that the maximal depth of ReLU activation is much less than linear and tanh
     activations, and that the orthogonal weights and the residual architecture can improve
