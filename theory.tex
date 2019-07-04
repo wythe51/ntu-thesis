@@ -398,9 +398,57 @@ consistent to our analysis.
 
 \section{Representation power of residual-like architectures} \label{repr_residual}
 
+Residual network (\cite{resnet1, resnet2}) is another example for training very deep nerual
+networks successfully.
+Unlike the orthogonal weight initialization, the residual network is one of an architecture
+solution to improve the training performance. In this section, the advantage of the 
+additional identity skip connections (i.e. residual shortcut connections) and the effect
+to the representation power will be discussed.
 
+First, the network architecture to be considered is present in Figure \ref{fig:resnet_def}, which is
+similar to \cite{resnet2}. For the 1-layer shortcut case in Figure \ref{fig:resnet_def1}, we can
+rewrite the network equation defined in \eqref{network_eqn} as
+\begin{equation}
+    \begin{aligned}
+        \mathbf{x}_{l}&=\mathbf{x}_{l-1} + \mathcal{F}(\mathbf{W}_l, \mathbf{x}_{l-1})\\
+        &=\mathbf{x}_{0} + \sum_{i=0}^{l-1}\mathcal{F}(\mathbf{W}_{i+1}, \mathbf{x}_{i}),
+    \end{aligned}
+\label{resnet_eqn}
+\end{equation}
+where $\mathcal{F}(\cdot)$ is the residual block function consist of batch normalization
+(\cite{batchnorm}), activation function and weight multiplication.
+After the first-order approximation as \eqref{covariance_eqn}, the residual block function
+$\mathcal{F}(\mathbf{W}_l, \mathbf{x}_{l-1})$ can be approximated as $\mathbf{F}_l\mathbf{x}_{l-1}$.
+Therefore, the input-output Jacobian matrix $\mathbf{J}$ can be expressed as
+$\prod_{i=1}^{L}(\mathbf{I}+\mathbf{F}_i)$, where mathbf{I} is the identity matrix.
+The whole network hence can be viewed as a feed-forward network with weight matrices
+$\mathbf{I}+\mathbf{F}_i$. It is obvious that the expected cosine similarity between row vectors 
+of $\mathbf{I}+\mathbf{F}_i$ is much less than that of $\mathbf{F}_i$ only.
+That is, compared with the original feed-forward network with the layer-by-layer transformation
+$\mathbf{F}_i$, the residual-like architecture with identity shortcut connection has the
+layer-by-layer transformation $\mathbf{I}+\mathbf{F}_i$, which is more close to the orthogonality
+even when the activation funciton is ReLU.
+From the results of Section \ref{repr_orthogonal}, we can say that the residual-like architecture
+suffer less from the vanishing representation power problem.
 
+In Figure \ref{fig:repr_residual}, similar settings to Figure \ref{fig:repr_general} are 
+used excluding the network architectures, which are defined in Figure \ref{fig:resnet_def}.
+It is shown that for a residual-like architecture, the VNI $R_{sq}$ grows slowly as the network
+depth $L$ gets larger. The ReLU activation function, which results in the vanishing representation
+power in Section \ref{repr_general} and \ref{repr_orthogonal}, does not make the VNI $R_{sq}$ go
+to 1 in 10000 layers. Instead, the VNI $R_{sq}$ for a 10000-layer residual ReLU network grows to a
+relatively small value ($\sim0.04$), which implies that the network maintains enough representation
+power even when the network is very deep.
+Also, the VNI $R_{sq}$ for the 2-layer skip grows more slowly than that for the 1-layer skip. It 
+can be reasoned that the 2-layer skip architecture, in some sense, reduces the effective network depth
+to nearly half of the $L$ because the input-output Jacobian for the 2-layer skip architecture can be
+expressed as $\prod_{i=1}^{L/2}(\mathbf{I}+\mathbf{F}_{2i-1}\mathbf{F}_{2i})$.
 
+The maximal depths of residual-like network for different activation functions with scaled-Gaussian
+weight initialization are also shown in Table \ref{dead_table}.
+It shows that no matter which activation function is chosen, the maximal depths of the networks are
+more than 10000 layers. That is, the residual-like architecture can prevent the network representation
+power from intensely vanishing. Similar results can be observed in Figure \ref{fig:repr_architecture}.
 
 \begin{figure}[h]
     \centering
@@ -418,11 +466,9 @@ consistent to our analysis.
       \includegraphics[width=1.0\linewidth]{500_layer_rsq}
       \label{fig:repr_general_b}
     \end{subfigure}%
-    \caption[The initial $R_{sq}$ of Gaussian initialized networks.]{
+    \caption[The initial VNI $R_{sq}$ of Gaussian initialized networks.]{
         The network width $N$ is set to $500$ and the network depth $L$ ranges from $1$ to
-        $10000$. The network is fed with 1000 randomly generated data point drawn from 
-        zero-mean white Gaussian distribution with standard deviation equals to $0.1$.
-        The VNI $R_{sq}$ are evaluated according to the definition in \eqref{rsq_def}.
+        $10000$. The VNI $R_{sq}$ are evaluated according to the definition in \eqref{rsq_def}.
         The weights are initialized with scaled-Gaussian distribution (\cite{xavier, he}).
         The activation functions of the networks include tanh, ReLU and linear.
         The simulation is repeated for 20 times, and the medians of the VNI over 20 runs
@@ -452,7 +498,7 @@ consistent to our analysis.
       \includegraphics[width=1.0\linewidth]{500_o_layer_rsq}
       \label{fig:repr_orthogonal_b}
     \end{subfigure}%
-    \caption[The initial $R_{sq}$ of orthogonal initialized networks.]{
+    \caption[The initial VNI $R_{sq}$ of orthogonal initialized networks.]{
         Similar settings to Figure \ref{fig:repr_general} are used excluding the weights,
         which are initialized with scaled-Orthogonal distribution (\cite{mft:linear}).
         It is shown that for a feed-forward architecture under the orthogonal initialization
@@ -463,25 +509,85 @@ consistent to our analysis.
     \label{fig:repr_orthogonal}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \newcommand{\myWidth}{0.48\textwidth}
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{Residual deep network with 1-layer skip}
+      \includegraphics[width=0.48\linewidth]{architecture_res1}
+      \label{fig:resnet_def1}
+    \end{subfigure}
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{Residual deep network with 2-layer skip}
+      \includegraphics[width=0.48\linewidth]{architecture_res2}
+      \label{fig:resnet_def2}
+    \end{subfigure}%
+    \caption[The architectures of residual deep networks]{
+        The architectures of residual deep networks is presented in this figure.
+        The network is composed of 4 operations: batch normalization (\cite{batchnorm}), activation
+        function, weight multiplication and the addition with the identity mapping from the skip 
+        connection.
+        The left architecture has the 1-layer skip, and the right one has the 2-layer skip, which is
+        the original definition in previous works(\cite{resnet2}).
+    }
+    \label{fig:resnet_def}
+\end{figure}
 
 \begin{figure}[h]
     \centering
     \newcommand{\myWidth}{0.9\textwidth}
     \begin{subfigure}{\myWidth}
       \centering
-      \caption{Network depth $L\in[1, 10000]$}
-      \includegraphics[width=1.0\linewidth]{10000_r2_layer_rsq}
+      \caption{1-layer shortcut defined in Figure \ref{fig:resnet_def1}}
+      \includegraphics[width=1.0\linewidth]{10000_r1_layer_rsq}
       \label{fig:repr_residual_a}
     \end{subfigure}
     
     \begin{subfigure}{\myWidth}
       \centering
-      \caption{Network depth $L\in[1, 500]$}
-      \includegraphics[width=1.0\linewidth]{500_r2_layer_rsq}
+      \caption{2-layer shortcut defined in Figure \ref{fig:resnet_def2}}
+      \includegraphics[width=1.0\linewidth]{10000_r2_layer_rsq}
       \label{fig:repr_residual_b}
     \end{subfigure}%
-    \caption[The initial $R_{sq}$ of residual networks.]{}
+    \caption[The initial VNI $R_{sq}$ of residual networks.]{
+    Similar settings to Figure \ref{fig:repr_general} are used excluding the network architectures,
+    which are defined in Figure \ref{fig:resnet_def}.
+    It is shown that for a residual-like architecture, the VNI $R_{sq}$ grows slowly as the network
+    depth $L$ gets larger.
+    Note that for the 2-layer shortcut architecture, we only perform the simulation with even numbers
+    of hidden layers.}
     \label{fig:repr_residual}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \newcommand{\myWidth}{0.9\textwidth}
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{Tanh activatoin function}
+      \includegraphics[width=1.0\linewidth]{10000_tanh_layer_rsq}
+      \label{fig:repr_architecture_a}
+    \end{subfigure}
+    
+    \begin{subfigure}{\myWidth}
+      \centering
+      \caption{ReLU activation function}
+      \includegraphics[width=1.0\linewidth]{10000_relu_layer_rsq}
+      \label{fig:repr_architecture_b}
+    \end{subfigure}%
+    \caption[The initial VNI $R_{sq}$ of different network architectures.]{
+    To compare the VNI $R_{sq}$ of different network architectures, we plot the curves of Figure
+    \ref{repr_general} and \ref{repr_residual} in the same graph.
+    The weight initialization methods are set to the same (Gaussian distribution).
+    We can see that for both tanh and ReLU cases, the residual architecture has much smaller VNI
+    $R_{sq}$ when the network depth $L$ increases.
+    It implies that the residual skip connections can keep more representation power when a very deep
+    network is considered.
+    }
+    \label{fig:repr_architecture}
 \end{figure}
 
 \begin{table}[h]
