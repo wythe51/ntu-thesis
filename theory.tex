@@ -422,11 +422,11 @@ $\mathcal{F}(\mathbf{W}_l, \mathbf{x}_{l-1})$ can be approximated as $\mathbf{F}
 Therefore, the input-output Jacobian matrix $\mathbf{J}$ can be expressed as
 $\prod_{i=1}^{L}(\mathbf{I}+\mathbf{F}_i)$, where mathbf{I} is the identity matrix.
 The whole network hence can be viewed as a feed-forward network with weight matrices
-$\mathbf{I}+\mathbf{F}_i$. It is obvious that the expected cosine similarity between row vectors 
-of $\mathbf{I}+\mathbf{F}_i$ is much less than that of $\mathbf{F}_i$ only.
+$(\mathbf{I}+\mathbf{F}_i)$. It is obvious that the expected cosine similarity between row vectors 
+of $(\mathbf{I}+\mathbf{F}_i)$ is much less than that of $\mathbf{F}_i$ only.
 That is, compared with the original feed-forward network with the layer-by-layer transformation
 $\mathbf{F}_i$, the residual-like architecture with identity shortcut connection has the
-layer-by-layer transformation $\mathbf{I}+\mathbf{F}_i$, which is more close to the orthogonality
+layer-by-layer transformation $(\mathbf{I}+\mathbf{F}_i)$, which is more close to the orthogonality
 even when the activation funciton is ReLU.
 From the results of Section \ref{repr_orthogonal}, we can say that the residual-like architecture
 suffer less from the vanishing representation power problem.
@@ -441,7 +441,7 @@ relatively small value ($\sim0.04$), which implies that the network maintains en
 power even when the network is very deep.
 Also, the VNI $R_{sq}$ for the 2-layer skip grows more slowly than that for the 1-layer skip. It 
 can be reasoned that the 2-layer skip architecture, in some sense, reduces the effective network depth
-to nearly half of the $L$ because the input-output Jacobian for the 2-layer skip architecture can be
+to nearly $L/2$ because the input-output Jacobian for the 2-layer skip architecture can be
 expressed as $\prod_{i=1}^{L/2}(\mathbf{I}+\mathbf{F}_{2i-1}\mathbf{F}_{2i})$.
 
 The maximal depths of residual-like network for different activation functions with scaled-Gaussian
