@@ -116,6 +116,21 @@ norm-preserving property.
 For the orthogonal initialization, the zero-mean is already achieved, and the $L_2$-norm of the
 orthogonal basis should be set to $\sigma_w$.
 
+Another point needs to be considered is the network width $N$ in the variances of weight matrices
+$\sigma_w^2/N$. When the widths of two adjacent layers are not the same, the $N$ is suggested to
+be $(N_l+N_{l-1})/2$ as a compromise between forward and backward variance
+propagation (\cite{xavier}). Also in \cite{he}, the $N$ for a convolutional layer is suggested to
+be $k^2c$, where $k$ denotes the kernel size and $c$ represents the number of channels.
+
+It is worth mentioning that for the residual-like architectures, the norm-preserving weight
+initialization designed for feed-forward networks (\cite{xavier, he}) are not the optimal
+initialization methods. Instead, the optimal initialization method should
+depend on the network depth $L$ (\cite{mft:resnet}) to prevent exploding values of nodes.
+The norm-preserving $\sigma_w^2$ of a residual architecture is suggested to be $\mathcal{O}(L^{-1})$
+to avoid explosion (\cite{resnet_init}).
+However, the residual-like architecture is often combined with batch normalization (\cite{batchnorm}),
+which reduces the importance of weight initialization.
+
 \section{The two obstacles for training deep nerual networks} \label{comp:obstacles}
 \input{img/Sec6/theo1/sec6theo1.tex}
 

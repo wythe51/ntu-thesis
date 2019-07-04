@@ -278,10 +278,10 @@ $N=500$ is large relative to the network depth $L=100$.
 
 
 
-\section{Representation power vanishes as the network goes deeper} \label{repr_general}
+\section{The vanishing of the representation power} \label{repr_general}
 
-The phenomena that the representation power of a deep network vanishes as its depth gets larger is shown
-in this section.
+The phenomena that the representation power of a very deep network vanishes
+is shown in this section.
 Recent works \cite{mft:expo, expressive, linear_regions, expr_power, relu_understand,
 relu_benifit, relu_approx} put emphasis on the benifit of increasing the depth of a neural network,
 and claim that the representation power of a neural network grows exponentially as its depth. 
@@ -290,8 +290,9 @@ all variable space.
 Practically, it has small probability for the representation power to reach the upper bound when
 the weight matrices are randomly initialized.
 In the following, we will show that if the weight matrices are drawn from a non-orthogonal
-probability distribution (such as the normal distribution and the uniform distribution), the
-representation power will vanish as the depth gets larger.
+probability distribution (such as the normal distribution and the uniform distribution), the VNI
+$R_{sq}$ increases to 1 as the network goes deeper. Moreover, as the VNI $R_{sq}$ reaches nearly 1,
+the representation power of the network will vanish.
 
 The VNI $R_{sq}$ has been defined in \eqref{rsq_def} to measure the correlation between the output nodes of
 a network, and hence the VNI can be viewed as a measurement of the level of redundancy.
@@ -312,9 +313,9 @@ ReLU case, we add the layer normalization (\cite{layer_norm}) blocks between hid
 in order to prevent the node values from converging to zeros. If the node values converges
 to zeros, the result of \eqref{rsq_def} become undefined.
 Also note that since in our case, the layer
-normalization only rescale the node values, it will not effect the value of VNI evaluated
+normalization only rescale the node values, it will not affect the value of VNI evaluated
 from \eqref{rsq_def}, which is a scale-invariant metric.
-The simulation is repeated for 20 times, and the medians of the VNI over 20 runs are plot as
+The simulation is repeated for 20 times, and the medians of the VNI over 20 runs are plotted as
 the solid lines, and the boundaries of the colored regions are the first and the third
 quartiles of the VNI. It is shown that for a feed-forward architecture under a non-orthogonal
 initialization, the initial VNI $R_{sq}$ increases to 1 as $L$ gets larger. That is,
@@ -420,7 +421,7 @@ where $\mathcal{F}(\cdot)$ is the residual block function consist of batch norma
 After the first-order approximation as \eqref{covariance_eqn}, the residual block function
 $\mathcal{F}(\mathbf{W}_l, \mathbf{x}_{l-1})$ can be approximated as $\mathbf{F}_l\mathbf{x}_{l-1}$.
 Therefore, the input-output Jacobian matrix $\mathbf{J}$ can be expressed as
-$\prod_{i=1}^{L}(\mathbf{I}+\mathbf{F}_i)$, where mathbf{I} is the identity matrix.
+$\prod_{i=1}^{L}(\mathbf{I}+\mathbf{F}_i)$, where $\mathbf{I}$ is the identity matrix.
 The whole network hence can be viewed as a feed-forward network with weight matrices
 $(\mathbf{I}+\mathbf{F}_i)$. It is obvious that the expected cosine similarity between row vectors 
 of $(\mathbf{I}+\mathbf{F}_i)$ is much less than that of $\mathbf{F}_i$ only.
@@ -472,7 +473,7 @@ power from intensely vanishing. Similar results can be observed in Figure \ref{f
         The weights are initialized with scaled-Gaussian distribution (\cite{xavier, he}).
         The activation functions of the networks include tanh, ReLU and linear.
         The simulation is repeated for 20 times, and the medians of the VNI over 20 runs
-        are plot as the solid lines, and the boundaries of the colored regions are the first
+        are plotted as the solid lines, and the boundaries of the colored regions are the first
         and the third quartiles of the VNI. It is shown that for a feed-forward architecture
         under a non-orthogonal initialization, the initial VNI $R_{sq}$ increases to 1 as $L$
         gets larger, and that the VNI of ReLU activation, especially, grows in the steepest
