@@ -15,10 +15,8 @@
 \BOOKMARK [1][-]{section.4.1}{Comparison\040of\040exploding/vanishing\040gradients\040and\040vanishing\040nodes}{chapter.4}% 15
 \BOOKMARK [1][-]{section.4.2}{Norm-preserving\040weight\040initialization}{chapter.4}% 16
 \BOOKMARK [1][-]{section.4.3}{The\040two\040obstacles\040for\040training\040deep\040nerual\040networks}{chapter.4}% 17
-\BOOKMARK [1][-]{section.4.4}{Batch\040normalization\040results\040in\040exploding\040gradients}{chapter.4}% 18
-\BOOKMARK [1][-]{section.4.5}{T-normalization:\040A\040novel\040normalization\040method\040for\040deep\040networks}{chapter.4}% 19
-\BOOKMARK [0][-]{chapter.5}{Experiments}{}% 20
-\BOOKMARK [1][-]{section.5.1}{Probability\040of\040failed\040training}{chapter.5}% 21
-\BOOKMARK [1][-]{section.5.2}{Analyses\040of\040failed\040training}{chapter.5}% 22
-\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 23
-\BOOKMARK [0][-]{chapter.6}{Bibliography}{}% 24
+\BOOKMARK [0][-]{chapter.5}{Experiments}{}% 18
+\BOOKMARK [1][-]{section.5.1}{Probability\040of\040failed\040training\040caused\040by\040vanishing\040nodes}{chapter.5}% 19
+\BOOKMARK [1][-]{section.5.2}{Analyses\040of\040failed\040training\040caused\040by\040vanishing\040nodes}{chapter.5}% 20
+\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 21
+\BOOKMARK [0][-]{chapter.6}{Bibliography}{}% 22

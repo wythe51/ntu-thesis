@@ -179,6 +179,92 @@ with the \textit{learning capability} and the \textit{representation power} of a
 
 % \input{img/Sec6/sim1/sec6sim1.tex}
 
+\iffalse
+
 \section{Batch normalization results in exploding gradients} \label{comp:bn}
 
+Batch normalization (will be written as batchnorm in the following) is a widely
+used technique for helping training deep neural networks. As the paper that introduced
+batchnorm (\cite{batchnorm}) states:
+
+\textit{In traditional deep networks, too-high learning rate may result in the gradients that
+explode or vanish, as well as getting stuck in poor local minima. Batch Normalization helps
+address these issues. ...}
+\textit{Batch Normalization allows us to use much higher learning rates and
+be less careful about initialization.}
+
+That is, the introducer suggested that batchnorm helps solve exploding/vanishing gradients problem and
+also reduces the importance of careful weight initialization and conservative learning rate.
+
+The batchnorm operation is originally defined as
+\begin{equation}
+    \begin{aligned}
+        \mu_\mathcal{B}&\leftarrow\frac{1}{B}\sum_{i=1}^{B}h_{l(i)}
+        &//\text{batch mean}\\
+        \sigma_\mathcal{B}^2&\leftarrow\frac{1}{B}\sum_{i=1}^{B}(h_{l(i)}-\mu_\mathcal{B})^2\;
+        &//\text{batch variance}\\
+        \widehat{y}_{l(i)}&\leftarrow\frac{h_{l(i)}-\mu_\mathcal{B}}{\sqrt{\sigma_\mathcal{B}^2+\epsilon}}
+        &//\text{normalize}\\
+        y_{l(i)}&\leftarrow\gamma\widehat{y}_{l(i)}+\beta\equiv\text{BN}_{\gamma,\beta}(h_{l(i)})\;
+        &//\text{scale and shift}\\
+        x_{l(i)}&=\phi(y_{l(i)})
+        &//\text{activation function},
+    \end{aligned}
+    \label{eqn:bn}
+\end{equation}
+where $B$ denotes the batch size, $i$ in the subscript represents the batch index, $\gamma, \beta$ are
+trainable parameters and $\epsilon$ is a small positive constant.
+
+It can be observed that in in \eqref{eqn:bn}, the normalizing operation rescales the nodes value
+to a unit-variance zero-mean distribution. % forward
+
+However, as \cite{mft:bn, explode_bn} point out, the batchnorm actually makes the gradients explode.
+In the following paragraph, we will provide the explantion of this phenomenon.
+For simplicity, we assume the initial settings: $\gamma=1$, $\beta=0$, $b=0$ and the weight
+are following Gaussian distribution with zero mean and $1/N$ variance, and assume the effect of
+$\epsilon$ is neglectable. Below, we will explain the effect of batchnorm by the information
+propagation in the order of \ref{fig:batchnorm_propagation}.
+
+For the forward propagation:
+\begin{enumerate}
+    \setcounter{enumi}{-1}
+    \item $\mathbf{y}_{l-1}$
+    \item $\mathbf{x}_{l-1}$
+    \item $\mathbf{h}_{l}$
+    \item $\widehat{\mathbf{y}}_{l}$
+    \item $\mathbf{y}_{l}$
+    \item $\Delta\mathbf{y}_{l}$
+    \item $\Delta\widehat{\mathbf{y}}_{l}$
+    \item $\Delta\mathbf{h}_{l}$
+    \item $\Delta\mathbf{x}_{l-1}$
+    \item $\Delta\mathbf{y}_{l-1}$
+\end{enumerate}
+
+To overcome the gradients exploding problem, \cite{mft:bn} suggested that adjusting the working
+range of the pre-activation to the linear regime of the activation function can avoid the batchnorm
+network from gradient explosion.
+That is,
+
+However, it is obvious that the linear regime method introduced by \cite{mft:bn} reduce the
+nonlinearity of the network, and hence weaken the representation capability of the network.
+The details are provided in Section \ref{tn_vs_bn}.
+Instead, we propose another method, called \textit{T-normalization}, that focus on normalizing the
+weight matrices. The definition and properties of T-normalization are presented in Section
+\ref{comp:tn}.
+
+
 \section{T-normalization: A novel normalization method for deep networks} \label{comp:tn}
+
+
+
+\begin{figure}[h]
+    \centering
+    \newcommand{\myWidth}{0.90\textwidth}
+    \centering
+    \includegraphics[width=1.0\linewidth]{img/TNorm/batchnorm}
+    \caption[The information propagation of batchnorm]{
+    }
+    \label{fig:batchnorm_propagation}
+\end{figure}
+
+\fi
