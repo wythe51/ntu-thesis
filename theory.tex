@@ -276,6 +276,189 @@ $N=500$ is large relative to the network depth $L=100$.
 %%% FIGURE %%%
 \input{img/Sec5/sim2/sec5sim2.tex}
 
+\section{Relationship between the VNI and the redundancy of nodes}
+
+In this section, we would like to connect the VNI $R_{sq}$ with the redundancy of nodes.
+First, the $N$ random variables of node values in a hidden layer are defined as $\{X_1, X_2, ..., X_N\}$.
+Without loss of generality, we assume that every $X_i$ are following $\mathcal{N}(0, 1)$ distribution.
+Therefore, the covariance matrix of random vector $[X_1, X_2, ..., X_N]^T$ is
+\begin{equation}
+    \mathbf{C}=
+    \begin{bmatrix}
+        1 & \rho_{12} & \cdots & \rho_{1N} \\
+        \rho_{21} & 1 & \cdots & \rho_{2N} \\
+        \vdots & \vdots & \ddots & \vdots  \\
+        \rho_{N1} & \rho_{N2} & \cdots & 1
+    \end{bmatrix},
+    \label{rv_cov}
+\end{equation}
+where $C_{ij}=\mathbb{E}[(X_i-\overline{X_i})(X_j-\overline{X_j})]$ as defined in
+\eqref{covariance_eqn}, $\rho_{ij}$ is the correlation coefficient between $X_i$ and $X_j$,
+and hence $\mathbf{C}$ is a symmetric matrix.
+By the definition of the VNI $R_{sq}$ from \eqref{rsq_def}, the $R_{sq}$
+can be represented as
+\begin{equation}
+    R_{sq}=\frac{\sum_{i=1}^N\sum_{j=1}^N\rho_{ij}^2}{N^2}
+    =\frac{tr(\mathbf{C}\mathbf{C}^T)}{N^2}=\frac{1}{N^2}tr(\mathbf{C}^2).
+    \label{rv_rsq}
+\end{equation}
+\eqref{rv_rsq}
+
+Let the eigenvalues of $\mathbf{C}$ are $\lambda_1, \lambda_2, \dots, \lambda_N$.
+By the relationship between matrix trace and eigenvalues, we have
+\begin{equation}
+    \begin{aligned}
+        \sum_{i=1}^N\lambda_i&=tr(\mathbf{C})=N\\
+    \sum_{i=1}^N\lambda_i^2&=tr(\mathbf{C}^2)=N^2R_{sq}.
+    \end{aligned}
+    \label{rv_eigen}
+\end{equation}
+
+To relate $R_{sq}$ with the redundancy of random variables, a method for measuring the redundancy
+is needed.
+From the priciple component analysis (PCA), the eigenvalue of $\mathbf{C}$ can represent the 
+energy (i.e. the variance) associated with each eigenvector.
+Therefore, we can use the distribution of eigenvalues $\lambda_i$ to determine the proportion of
+redundant components, and hence the effective number of nodes can be evalueated.
+Similar to PCA, we first rearange the order of eigenvalues $\lambda_i$ such that
+$\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_N\geq 0$.
+We define a constant $\varepsilon\in(0, 1)$ to be the "effective threshold ratio" of eigenvalues.
+That is, if $\lambda_i \geq \varepsilon\lambda_1$, then we say that the $i$-th component $\lambda_i$ is
+$\varepsilon$-effective.
+Otherwise, the $i$-th component $\lambda_i$ is said to be redundant.
+
+We introduce a new metric called "$\varepsilon$-effective number of nodes ($\varepsilon$-ENN)" as
+\begin{equation}
+    \varepsilon\text{-ENN}\overset{\Delta}{=}max(\{t\in\mathbb{N}: \lambda_t\geq\varepsilon\lambda_1\}).
+    \label{eENN_def}
+\end{equation}
+That is, $\varepsilon\text{-ENN}$ is the maximum number of $\varepsilon$-effective nodes.
+As in \eqref{rv_eigen}, the constraints on $\lambda_i$ are already derived.
+Also, it is intuitive that the maximum in \eqref{eENN_def} can simply be attained with eigenvalues
+$\{\lambda_1, \varepsilon\lambda_1, \dots, \varepsilon\lambda_1, 0, \dots, 0\dots, 0\}$, where there are 
+$(t-1)$ $\varepsilon\lambda_1$ and $(N-1)$ zeros. Insert these eigenvalues into \eqref{rv_eigen}, we have
+\begin{equation}
+    \begin{aligned}
+        \lambda_1+(t-1)\varepsilon\lambda_1 &= N \\
+        \lambda_1^2+(t-1)(\varepsilon\lambda_1)^2 &= N^2R_{sq}.
+    \end{aligned}
+    \label{effective_eigen}
+\end{equation}
+Inserting the first equation in \eqref{effective_eigen} into the second one, we can get
+\begin{equation}
+    [1+(t-1)\varepsilon]^2=\Big(\frac{N}{\lambda_1}\Big)=\frac{1+(t-1)\varepsilon^2}{R_{sq}},
+    \label{quad_eenn}
+\end{equation}
+which is a solvable quadratic equation. The numerical solution of the effective number of nodes for
+given $\varepsilon$ are provided in Figure \ref{fig:eps_rsq}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{eps_rsq}
+    \caption[The effective number of nodes to the VNI $R_{sq}$]
+    {The numerical solution of the effective number of nodes for given $\varepsilon$.
+    It can be observed that the effective number of nodes vanishes as the VNI $R_{sq}$ increases to 1.
+    Also, if a stricter (i.e. larger) $\varepsilon$ is chosen, the $\varepsilon$-ENN vansihes much
+    faster.
+    Note that the number of random variables $N$ is set to $500$.
+    }
+    \label{fig:eps_rsq}
+\end{figure}
+
+After the differentiation of the \eqref{quad_eenn}, the derivative of $R_{sq}$ with respect to $t$ is
+\begin{equation}
+    \begin{aligned}
+    \frac{dR_{sq}}{dt}&=
+    \frac{[1+(t-1)\varepsilon]^2\cdot\varepsilon^2
+    -[1+(t-1)\varepsilon^2]\cdot 2\varepsilon[1+(t-1)\varepsilon]}
+    {[1+(t-1)\varepsilon]^4}\\
+    &=\varepsilon
+    \frac{[1+(t-1)\varepsilon]\cdot\varepsilon
+    -2[1+(t-1)\varepsilon^2]}
+    {[1+(t-1)\varepsilon]^3}\\
+    &<0.
+    \end{aligned}
+    \label{negative_diff}
+\end{equation}
+
+From \eqref{negative_diff}, we can derive the Theorem \ref{oppo}.
+
+\begin{theorem}[Opposite trend between the VNI and the ENN]
+    \label{oppo}
+    For any theshold $\varepsilon$, 
+    \\the $\varepsilon$-effective number of nodes strictly decreases as the VNI $R_{sq}$ increases.
+\end{theorem}
+
+Also, insert the $R_{sq}=1$ condition into \eqref{quad_eenn}, then the solution of $t$ becomes $1$ 
+(no matter the value of $\varepsilon$). Therefore, the Theorem \ref{collapse} can be proved.
+
+\begin{theorem}[Network collapsing]
+    \label{collapse}
+    For any theshold $\varepsilon$,
+    \\the $\varepsilon$-effective number of nodes becomes only 1 when the VNI $R_{sq}$ is 1.
+\end{theorem}
+
+
+
+\iffalse
+In probability theory and in particular in information theory, \textit{total correlation}
+(\cite{total_corr}) is one of metric used to quantify the redundancy among random variables.
+The definition of total correlation ($TC$) is defined as the Kullback–Leibler divergence (\cite{KL_div})
+from the joint distribution to the independent distribution of $\{X_1, X_2, \dots, X_N\}$. That is,
+\begin{equation}
+    TC\overset{\Delta}{=}D_{KL}[p(X_1, \dots, X_N)||p(X_1)p(X_2)\cdots p(X_N)],
+    \label{def_total_corr}
+\end{equation}
+where $D_{KL}$ is the Kullback–Leibler divergence, $p(X_1, \dots, X_N)$ is the joint distribution and
+$p(X_1)p(X_2)\cdots p(X_N)$ is the independent distribution of $\{X_1, X_2, \dots, X_N\}$.
+Note that the range of $TC$ is $[0,\infty)$, and the higher value representation the 
+
+The definition of the Kullback–Leibler divergence is
+\begin{equation}
+    D_{KL}(P||Q)=\int_{-\infty}^{\infty}p(x)log\Big(\frac{p(x)}{q(x)}\Big)dx.
+    \label{def_kl}
+\end{equation}
+Also, the probability density functions of normal distribution are
+\begin{equation}
+    \begin{aligned}
+        (\forall i), \;p(X_i) &= \frac{1}{\sqrt{2\pi}}exp\Big(-\frac{x^2}{2}\Big)\\
+        p(X_1, \dots, X_N)&=\frac{1}{\sqrt{(2\pi)^N|\mathbf{C}|}}
+            exp\Big(-\frac{1}{2}\mathbf{x}^T\mathbf{C}^{-1}\mathbf{x}\Big).
+    \end{aligned}
+    \label{def_normal}
+\end{equation}
+From \eqref{def_kl} and \eqref{def_normal}, the Kullback–Leibler divergence between two normal
+distribution $P$ and $Q$ is
+\begin{equation}
+    \begin{aligned}
+        D(P||Q)&=\mathbb{E}_P[log(P)-log(Q)]\\
+        &=\frac{1}{2}\mathbb{E}_P[-log(|\mathbf{C}_P|)-\mathbf{x}^T\mathbf{C}_P^{-1}\mathbf{x}
+        +log(|\mathbf{C}_Q|)-\mathbf{x}^T\mathbf{C}_Q^{-1}\mathbf{x}]\\
+        &=\frac{1}{2}log\Big(\frac{|\mathbf{C}_Q|}{|\mathbf{C}_P|}\Big)
+        +\frac{1}{2}\mathbb{E}_P[-tr(\mathbf{C}_P^{-1}\mathbf{C}_P)
+        +tr(\mathbf{C}_Q^{-1}\mathbf{xx}^T)]\\
+        &=\frac{1}{2}log\Big(\frac{|\mathbf{C}_Q|}{|\mathbf{C}_P|}\Big)-N+
+        tr(\mathbf{C}_Q^{-1}\mathbf{C}_P),
+    \end{aligned}
+    \label{kl_normal}
+\end{equation}
+where $|\mathbf{C}|\equiv det(\mathbf{C})$ is the determinant of $\mathbf{C}$.
+
+Therefore, the total correlation of $\{X_1, X_2, \dots, X_N\}$ is
+\begin{equation}
+    \begin{aligned}
+        TC&=D_{KL}[p(X_1, \dots, X_N)||p(X_1)p(X_2)\cdots p(X_N)]\\
+        &=\frac{1}{2}log\Big(\frac{|I|}{|\mathbf{C}|}\Big)-N+
+        tr(\mathbf{C})\\
+        &=-\frac{1}{2}log(|\mathbf{C}|)\\
+        &=-\frac{1}{2}\sum_{i=1}^Nlog(\lambda_i).
+    \end{aligned}
+    \label{kl_derive}
+\end{equation}
+Note that in \eqref{kl_derive} we use the fact that the determinant of a matrix is equal to the
+product of all eigenvalues.
+
+\fi
 
 
 \section{The vanishing of the representation power} \label{repr_general}
