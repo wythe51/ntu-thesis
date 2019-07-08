@@ -306,7 +306,6 @@ can be represented as
     =\frac{tr(\mathbf{C}\mathbf{C}^T)}{N^2}=\frac{1}{N^2}tr(\mathbf{C}^2).
     \label{rv_rsq}
 \end{equation}
-\eqref{rv_rsq}
 
 Let the eigenvalues of $\mathbf{C}$ are $\lambda_1, \lambda_2, \dots, \lambda_N$.
 By the relationship between matrix trace and eigenvalues, we have
@@ -524,8 +523,9 @@ In Section \ref{repr_redundancy}, the redundant number of nodes has already been
 VNI $R_{sq}$. Therefore, we can simply use the VNI $R_{sq}$ as an approximation of the ratio of redunt
 nodes, and the number of effective nodes can be approximated as $N\cdot(1-R_{sq})+1$, that is,
 one node along with other non-redundant nodes.
-Because the representation power is closely related to the effective number of network nodes, the VNI
-$R_{sq}$ can provide an estimation of the representation power.
+The representation power is closely related to the effective number of network nodes, and the VNI
+$R_{sq}$ can provide an estimation of the effective number of nodes
+(as in Section \ref{repr_redundancy}).
  
 In Figure \ref{fig:repr_general}, the network width $N$ is set to $500$ and the network depth
 $L$ ranges from $1$ to $10000$. The network is fed with 1000 randomly generated data point
@@ -538,7 +538,7 @@ ReLU case, we add the layer normalization (\cite{layer_norm}) blocks between hid
 in order to prevent the node values from converging to zeros. If the node values converges
 to zeros, the result of \eqref{rsq_def} become undefined.
 Also note that since in our case, the layer
-normalization only rescale the node values, it will not affect the value of VNI evaluated
+normalization only rescales the node values, it will not affect the value of VNI evaluated
 from \eqref{rsq_def}, which is a scale-invariant metric.
 The simulation is repeated for 20 times, and the medians of the VNI over 20 runs are plotted as
 the solid lines, and the boundaries of the colored regions are the first and the third
@@ -559,7 +559,7 @@ activation is much less than linear and tanh activations. It has been stated
 \cite{relu_sparse} that the ReLU activation provides a sparse and distributed representation
 That is, the ReLU activation selects half of neurons as the active nodes, which may reduce the
 effective number of nodes. Since the maximal depth is closely related to the effective number
-of nodes, it provide another aspect explaining that the representation power vansihes
+of nodes, it provides another aspect explaining that the representation power vansihes
 faster for the ReLU activation.
 
 Here, we provide a theoretical claim for reasoning the VNI $R_{sq}$ of a Gaussian initialized

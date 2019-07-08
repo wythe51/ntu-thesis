@@ -18,7 +18,7 @@ we proof that the representation power of a network vanishes as the VNI goes to 
 The effective number of nodes goes to 1 as when the VNI equals to 1, which is called
 the "\textit{network collapsing}".
 Also, we show that for a non-orthogonal initialized network, the VNI increases as the network
-depth gets larger, and it asymptotically goes to 1 as the network depth tends to infinity.
+depth gets larger, and it asymptotically goes to 1 as the network is very deep.
 That is, the network collapses when we consider a very deep feed-forward neural network.
 
 However, if weight matrices are initialized with orthogonal distribution, or if a residual-like
@@ -29,7 +29,7 @@ Numerical simulations are also performed on different activation functions, weig
 and network architectures, which have a consistent result with our derivation.
 Both theoretical and numerical results suggest that the weight initialization and the architecture
 of a network determine its trainable depth.
-Orthogonal weight initialization and residual-like architecture, from this point of view, are
+Orthogonal weight initializations and residual-like architectures, from this point of view, are
 relatively better for training a very deep neural network.
 
 Moreover, we explore the difference between vanishing/exploding gradients and vanishing nodes,
