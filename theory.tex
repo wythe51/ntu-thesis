@@ -76,7 +76,11 @@ initialized to zero.
 % First, consider the network architecture we defined in \eqref{network_eqn}.
 % In particular, we have made several assumptions: (1) The input $\mathbf{x}_0$ is zero-mean, and features in $\mathbf{x}_0$ are independent and identically distributed. (2) All the weight matrices $\mathbf{W}_l$ in each layer are initialized from a same distribution with variance $\sigma_w^2/N$. (3) All the bias vectors $\mathbf{b}_l$ in each layer are initialized to zero.
 
-The input-output Jacobian matrix $\mathbf{J}\in\mathbb{R}^{N\times N}$  is defined as the first-order partial derivative of the output layer with respect to the input layer, which can be rewritten as $\frac{\partial\mathbf{x}_L}{\partial\mathbf{x}_0}=\prod_{l=1}^{L}\mathbf{D}_l\mathbf{W}_l$,
+The input-output Jacobian matrix $\mathbf{J}\in\mathbb{R}^{N\times N}$  is defined as the first-order partial derivative of the output layer with respect to the input layer, which can be rewritten as
+\begin{equation}
+    \frac{\partial\mathbf{x}_L}{\partial\mathbf{x}_0}=\prod_{l=1}^{L}\mathbf{D}_l\mathbf{W}_l,
+    \label{jacobian_eqn}
+\end{equation}
 where $\mathbf{D}_l\overset{\Delta}{=} diag(\phi'(\mathbf{h}_l))$ is the derivative of point-wise activation function $\phi$ at layer $l$.
 % With the input-output Jacobian and the given assumptions, we can perform the first-order forward approximation:
 To conduct a similar analysis as \cite{mft:linear}, consider the first-order forward approximation:
@@ -276,7 +280,7 @@ $N=500$ is large relative to the network depth $L=100$.
 %%% FIGURE %%%
 \input{img/Sec5/sim2/sec5sim2.tex}
 
-\section{Relationship between the VNI and the redundancy of nodes}
+\section{Relationship between the VNI and the redundancy of nodes} \label{repr_redundancy}
 
 In this section, we would like to connect the VNI $R_{sq}$ with the redundancy of nodes.
 First, the $N$ random variables of node values in a hidden layer are defined as $\{X_1, X_2, ..., X_N\}$.
@@ -329,24 +333,29 @@ Otherwise, the $i$-th component $\lambda_i$ is said to be redundant.
 
 We introduce a new metric called "$\varepsilon$-effective number of nodes ($\varepsilon$-ENN)" as
 \begin{equation}
-    \varepsilon\text{-ENN}\overset{\Delta}{=}max(\{t\in\mathbb{N}: \lambda_t\geq\varepsilon\lambda_1\}).
+    \varepsilon\text{-ENN}
+    \equiv N_{e}^\varepsilon
+    \overset{\Delta}{=}max(\{t\in\mathbb{N}: \lambda_t\geq\varepsilon\lambda_1\}).
     \label{eENN_def}
 \end{equation}
 That is, $\varepsilon\text{-ENN}$ is the maximum number of $\varepsilon$-effective nodes.
 As in \eqref{rv_eigen}, the constraints on $\lambda_i$ are already derived.
 Also, it is intuitive that the maximum in \eqref{eENN_def} can simply be attained with eigenvalues
 $\{\lambda_1, \varepsilon\lambda_1, \dots, \varepsilon\lambda_1, 0, \dots, 0\dots, 0\}$, where there are 
-$(t-1)$ $\varepsilon\lambda_1$ and $(N-1)$ zeros. Insert these eigenvalues into \eqref{rv_eigen}, we have
+$(N_{e}^\varepsilon-1)$ $\varepsilon\lambda_1$ and $(N-N_e^\varepsilon)$ zeros.
+Insert these eigenvalues into \eqref{rv_eigen}, we have
 \begin{equation}
     \begin{aligned}
-        \lambda_1+(t-1)\varepsilon\lambda_1 &= N \\
-        \lambda_1^2+(t-1)(\varepsilon\lambda_1)^2 &= N^2R_{sq}.
+        \lambda_1+(N_e^\varepsilon-1)\varepsilon\lambda_1 &= N \\
+        \lambda_1^2+(N_e^\varepsilon-1)(\varepsilon\lambda_1)^2 &= N^2R_{sq}.
     \end{aligned}
     \label{effective_eigen}
 \end{equation}
 Inserting the first equation in \eqref{effective_eigen} into the second one, we can get
 \begin{equation}
-    [1+(t-1)\varepsilon]^2=\Big(\frac{N}{\lambda_1}\Big)=\frac{1+(t-1)\varepsilon^2}{R_{sq}},
+    [1+(N_e^\varepsilon-1)\varepsilon]^2
+    =\Big(\frac{N}{\lambda_1}\Big)
+    =\frac{1+(N_e^\varepsilon-1)\varepsilon^2}{R_{sq}},
     \label{quad_eenn}
 \end{equation}
 which is a solvable quadratic equation. The numerical solution of the effective number of nodes for
@@ -365,40 +374,72 @@ given $\varepsilon$ are provided in Figure \ref{fig:eps_rsq}.
     \label{fig:eps_rsq}
 \end{figure}
 
-After the differentiation of the \eqref{quad_eenn}, the derivative of $R_{sq}$ with respect to $t$ is
-\begin{equation}
-    \begin{aligned}
-    \frac{dR_{sq}}{dt}&=
-    \frac{[1+(t-1)\varepsilon]^2\cdot\varepsilon^2
-    -[1+(t-1)\varepsilon^2]\cdot 2\varepsilon[1+(t-1)\varepsilon]}
-    {[1+(t-1)\varepsilon]^4}\\
-    &=\varepsilon
-    \frac{[1+(t-1)\varepsilon]\cdot\varepsilon
-    -2[1+(t-1)\varepsilon^2]}
-    {[1+(t-1)\varepsilon]^3}\\
-    &<0.
-    \end{aligned}
-    \label{negative_diff}
-\end{equation}
-
-From \eqref{negative_diff}, we can derive the Theorem \ref{oppo}.
-
 \begin{theorem}[Opposite trend between the VNI and the ENN]
     \label{oppo}
     For any theshold $\varepsilon$, 
     \\the $\varepsilon$-effective number of nodes strictly decreases as the VNI $R_{sq}$ increases.
 \end{theorem}
 
-Also, insert the $R_{sq}=1$ condition into \eqref{quad_eenn}, then the solution of $t$ becomes $1$ 
-(no matter the value of $\varepsilon$). Therefore, the Theorem \ref{collapse} can be proved.
+\begin{proof}
+        
+    Evaluate the differentiation of both sides of the \eqref{quad_eenn},
+    the derivative of $R_{sq}$ with respect to $N_e^\varepsilon$ is
+    \begin{equation}
+        \begin{aligned}
+        \frac{dR_{sq}}{dN_e^\varepsilon}&=
+        \frac{[1+(N_e^\varepsilon-1)\varepsilon]^2\cdot N_e^\varepsilon\varepsilon^2
+        -[1+(N_e^\varepsilon-1)\varepsilon^2]\cdot N_e^\varepsilon \cdot 2\varepsilon[1+(N_e^\varepsilon-1)\varepsilon]}
+        {[1+(N_e^\varepsilon-1)\varepsilon]^4}\\
+        &=\varepsilon\cdot
+        \frac{[1+(N_e^\varepsilon-1)\varepsilon]\cdot N_e^\varepsilon\varepsilon
+        -2[1+(N_e^\varepsilon-1)\varepsilon^2]}
+        {[1+(N_e^\varepsilon-1)\varepsilon]^3}\\
+        &=\varepsilon\cdot
+        \frac{\varepsilon-2-(N_e^\varepsilon-1)\varepsilon^2}
+        {[1+(N_e^\varepsilon-1)\varepsilon]^3}\\
+        &<0.
+        \end{aligned}
+        \label{negative_diff}
+    \end{equation}
+
+    Since in \eqref{negative_diff}, the derivative of $R_{sq}$ with respect to $N_e^\varepsilon$
+    is always negative,
+    the $N_e^\varepsilon$ is strictly decreasing with $R_{sq}$.
+
+\end{proof}
+
 
 \begin{theorem}[Network collapsing]
     \label{collapse}
     For any theshold $\varepsilon$,
-    \\the $\varepsilon$-effective number of nodes becomes only 1 when the VNI $R_{sq}$ is 1.
+    \\the $\varepsilon$-effective number of nodes $N_e^\varepsilon$ becomes only 1
+    when the VNI $R_{sq}$ is 1.
 \end{theorem}
 
+\begin{proof}
+    Insert the $R_{sq}=1$ condition into \eqref{quad_eenn}, then we have
+    \begin{equation}
+        \begin{aligned}
+            &[1+(N_e^\varepsilon-1)\varepsilon]^2=1+(N_e^\varepsilon-1)\varepsilon^2\\
+            \Rightarrow&(N_e^\varepsilon-1)[(N_e^\varepsilon-2)\varepsilon+2]=0\\
+            \Rightarrow& N_e^\varepsilon=1
+        \end{aligned}
+        \label{collapse_eqn}
+    \end{equation}
 
+    The solution of $N_e^\varepsilon$ in \eqref{quad_eenn} is $1$ 
+    (no matter the value of $\varepsilon$).
+    Therefore, the $\varepsilon$-effective number of nodes $N_e^\varepsilon$ becomes only 1
+    when the VNI $R_{sq}$ is 1.
+\end{proof}
+
+By Theorem \ref{oppo}, and Theorem \ref{collapse}, we can say that the effective number of nodes
+in a layer of a network vanishes to 1 as the VNI $R_{sq}$ increases to 1.
+If the output layer
+of a network has the VNI $R_{sq}=1$, then we can say that the network suffers from the
+"\textit{network collapsing}" problem, which has only 1 effective node at the output layer and
+hence cannot solve most of training tasks.
+% In Section \ref{repr_general}, we will show that the VNI $R_{sq}$ will increase to 1 when the depth of the network goes large enough.
 
 \iffalse
 In probability theory and in particular in information theory, \textit{total correlation}
@@ -479,9 +520,10 @@ the representation power of the network will vanish.
 
 The VNI $R_{sq}$ has been defined in \eqref{rsq_def} to measure the correlation between the output nodes of
 a network, and hence the VNI can be viewed as a measurement of the level of redundancy.
-We can simply use the VNI $R_{sq}$ as an approximation of the ratio of redunt nodes, and the number of 
-effective nodes can be approximated as $N\cdot(1-R_{sq})+1$, that is, one node along with other working
-(non-redundant) nodes.
+In Section \ref{repr_redundancy}, the redundant number of nodes has already been connected to the
+VNI $R_{sq}$. Therefore, we can simply use the VNI $R_{sq}$ as an approximation of the ratio of redunt
+nodes, and the number of effective nodes can be approximated as $N\cdot(1-R_{sq})+1$, that is,
+one node along with other non-redundant nodes.
 Because the representation power is closely related to the effective number of network nodes, the VNI
 $R_{sq}$ can provide an estimation of the representation power.
  
@@ -519,6 +561,80 @@ That is, the ReLU activation selects half of neurons as the active nodes, which 
 effective number of nodes. Since the maximal depth is closely related to the effective number
 of nodes, it provide another aspect explaining that the representation power vansihes
 faster for the ReLU activation.
+
+Here, we provide a theoretical claim for reasoning the VNI $R_{sq}$ of a Gaussian initialized
+linear network.
+
+\begin{theorem}[The VNI $R_{sq}$ goes to 1 as $L\rightarrow\infty$]
+    For a linear network with Gaussian initialized weight matrices
+    $\mathbf{W}_l, l\in\{1, 2, \dots, L\}$, the VNI $R_{sq}$ of
+    the network goes to 1 as $L\rightarrow\infty$.
+    \label{matrix_prod}
+\end{theorem}
+
+\begin{proof}
+    Let the product of weight matrices $\mathbf{P}$ as the input-output Jacobian
+    (defined in \eqref{jacobian_eqn}) of the linear network
+    \begin{equation}
+        \mathbf{P}_L\equiv\prod_{l=1}^L\mathbf{W}_l.
+        \label{prod_def}
+    \end{equation}
+    From \eqref{rsq_eigen}, we would like to show that
+    $R_{sq}=\frac{\sum_{k=1}^N\lambda_k^2}{(\sum_{k=1}^N\lambda_k)^2}$
+    goes to 1 as $L\rightarrow\infty$.
+    Note that the $\lambda_k$ is the $k$-th eigenvalue of $\mathbf{P}_L\mathbf{P}_L^T$, satisfying
+    $\lambda_1\leq\lambda_2\leq\dots\leq\lambda_N$.
+
+    Considering the asymptotic behavior of eigenvalues $\lambda_k$ when the depth $L$ tends to
+    infinity,
+    we can apply the Lyapunov exponents to the matrix $\mathbf{P}_L\mathbf{P}_L^T$ as
+    in \cite{prod_mat}.
+    \begin{equation}
+        \lim_{L\rightarrow\infty}(\mathbf{P}_L\mathbf{P}_L^T)^{1/2L}=e^\mathbf{H},
+        \label{lyap_exp}
+    \end{equation}
+    where $\mathbf{H}$ has eigenvalues $\mu_1\leq\mu_2\leq\dots\leq\mu_N$, which are known as the
+    Lyapunov exponents.
+
+    By the Oseledec's theorem \cite{osel_thm}, we have the asymptotic value of eigenvalue
+    \begin{equation}
+        \lambda_k\sim e^{2L\mu_k}.
+        \label{asym_eig}
+    \end{equation}
+    Previous works (\cite{prod_mat}) have already derived the value of $\mu_k$
+    \begin{equation}
+        \mu_k=\frac{1}{2}\log 2 + \frac{1}{2}\psi\Big(\frac{k}{2}\Big),
+        \label{mu_result}
+    \end{equation}
+    where $\psi(\cdot)$ denotes the \textit{digamma function}, which is defined as the logarithmic
+    derivative of the gamma function.
+    As in \cite{digamma}, the digamma function has the asymptotic expansion
+    \begin{equation}
+        \psi(x)\sim\log x-\frac{1}{2x}+O(x^{-2}).
+        \label{digamma_asym}
+    \end{equation}
+
+    Therefore, the eigenvalues $\lambda_k$ has the asymptotic approximation by \eqref{asym_eig} to
+    \eqref{digamma_asym}
+    \begin{equation}
+        \lambda_k\sim e^{L(\log k)}=k^L.
+        \label{eig_approx}
+    \end{equation}
+    Insert the result of \eqref{eig_approx} into \eqref{rsq_eigen}, we have
+    \begin{equation}
+        \begin{aligned}
+        \lim_{L\rightarrow\infty}\frac{\sum_{k=1}^N \lambda_k^2}{\big(\sum_{k=1}^N \lambda_k\big)^2}
+        &=\lim_{L\rightarrow\infty}\frac{\sum_{k=1}^N k^{2L}}{\big(\sum_{k=1}^N k^L\big)^2}\\
+        &=\lim_{L\rightarrow\infty}\frac{\sum_{k=1}^N (k/N)^{2L}}{\big(\sum_{k=1}^N (k/N)^L\big)^2}\\
+        &=1.
+        \end{aligned}
+        \label{eig_result}
+    \end{equation}
+
+    That is, the VNI $R_{sq}$ of
+    a linear network with Gaussian initialized weight matrices goes to 1 as $L\rightarrow\infty$.
+
+\end{proof}
 
 %, since the \textit{width} of a neural network also matters.
 %According to the "universal approximation theorem" proved by \cite{universal}, a single hidden layer with a finite number of neurons can approximate continuous functions on compact subsets.
@@ -604,14 +720,84 @@ where $\mathcal{F}(\cdot)$ is the residual block function consist of batch norma
 After the first-order approximation as \eqref{covariance_eqn}, the residual block function
 $\mathcal{F}(\mathbf{W}_l, \mathbf{x}_{l-1})$ can be approximated as $\mathbf{F}_l\mathbf{x}_{l-1}$.
 Therefore, the input-output Jacobian matrix $\mathbf{J}$ can be expressed as
-$\prod_{i=1}^{L}(\mathbf{I}+\mathbf{F}_i)$, where $\mathbf{I}$ is the identity matrix.
+$\prod_{l=1}^{L}(\mathbf{I}+\mathbf{F}_l)$, where $\mathbf{I}$ is the identity matrix.
 The whole network hence can be viewed as a feed-forward network with weight matrices
-$(\mathbf{I}+\mathbf{F}_i)$. It is obvious that the expected cosine similarity between row vectors 
-of $(\mathbf{I}+\mathbf{F}_i)$ is much less than that of $\mathbf{F}_i$ only.
+$\widehat{\mathbf{F}_l}\equiv(\mathbf{I}+\mathbf{F}_l)$. 
+
+We would like to show that the increasing effect to the VNI $R_{sq}$ 
+of $\widehat{\mathbf{F}_l}$ is much less than that of $\mathbf{F}_l$
+by comparing the expected cosine similarity between column vectors of 
+$\widehat{\mathbf{F}_l}$ and $\mathbf{F}_l$.
+Since the hidden nodes of $\mathbf{x}_l$ can be approximated as a result of linear transformation of
+$\mathbf{x}_{l-1}$ with column vectors of $\widehat{\mathbf{F}_l}$ or $\mathbf{F}_l$,
+the VNI $R_{sq}$ of layer $l$, which is the weighted average of correlation coefficient of
+$\mathbf{x}_l$, is highly dependent on the magnitude of the cosine similarity between column vectors
+of the transformation matrix.
+
+First, the cosine similarity between two vectors is defined as
+\begin{equation}
+    cos(\mathbf{a}, \mathbf{b}) \overset{\Delta}{=}
+    \frac{\mathbf{a}^T\mathbf{b}}{||\mathbf{a}||\cdot||\mathbf{b}||},
+    \label{def_cosine}
+\end{equation}
+where $||\mathbf{v}||$ denotes the $L_2$-norm of vector $\mathbf{v}$
+(i.e. $\sqrt{\mathbf{v}^T\mathbf{v}}$).
+Note that the transformation matrix $\mathbf{F}_l$ is basically the product of $\mathbf{D}_l$
+(defined in \eqref{jacobian_eqn}) and $\mathbf{W}_l$, and therefore the $\mathbf{F}_l$ inherits
+the zero-mean property of $\mathbf{W}_l$.
+Let the $i$-th column vectors of $\widehat{\mathbf{F}_l}$ and $\mathbf{F}_l$ be written as
+$\widehat{\mathbf{f}}_{l(i)}$ and $\mathbf{f}_{l(i)}$.
+By the fact that $\widehat{\mathbf{F}_l}\equiv(\mathbf{I}+\mathbf{F}_l)$, we have
+\begin{equation}
+    \begin{aligned}
+    \widehat{\mathbf{f}}_{l(i)}
+    &=\mathbf{f}_{l(i)}+[\underset{(i-1)}{0, \dots, 0}, 1, \underset{(N-i)}{0, \dots, 0}]^T\\
+    &=[f_{l(i,1)},\dots,f_{l(i,i-1)},(f_{l(i,i)}+1),f_{l(i,i+1)},\dots,f_{l(i,N)}]^T.
+    \end{aligned}
+    \label{hat_iden_add}
+\end{equation}
+
+Therefore, the cosine similarity between $i$-th and $j$-th column vectors of
+$\widehat{\mathbf{F}_l}$ can be expressed as
+\begin{equation}
+    \begin{aligned}
+        cos(\widehat{\mathbf{f}}_{l(i)}, \widehat{\mathbf{f}}_{l(j)})
+        &\equiv\frac
+        {\widehat{\mathbf{f}}_{l(i)}^T\widehat{\mathbf{f}}_{l(j)}}
+        {||\widehat{\mathbf{f}}_{l(i)}||\cdot||\widehat{\mathbf{f}}_{l(j)}||}\\
+        &=\frac
+        {\mathbf{f}_{l(i)}^T\mathbf{f}_{l(j)}+f_{l(i,j)}+f_{l(j,i)}}
+        {\sqrt{||\mathbf{f}_{l(i)}||^2+2f_{l(i,i)}+1}\cdot\sqrt{||\mathbf{f}_{l(j)}||^2+2f_{l(j,j)}+1}},
+    \end{aligned}
+    \label{res_cosine}
+\end{equation}
+which has a smaller magnitude (compared with $cos(\mathbf{f}_{l(i)}, \mathbf{f}_{l(j)})$) with high
+probability (as shown in Figure \ref{cosine_comp}).
+That is, the residual-like transfromation is closer to the orthogonality than the vanilla
+feed-forward transformation.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{cos_comp}
+    \caption[Numerical simulation for \eqref{res_cosine}]
+    {The probability of 
+    $|cos(\widehat{\mathbf{f}}_{l(i)}, \widehat{\mathbf{f}}_{l(j)})|<|cos(\mathbf{f}_{l(i)}, \mathbf{f}_{l(j)})|$
+    is shown in this figure.
+    The simulation is performed with 1000 pairs of random vectors drawn from zero-mean white Gaussian
+    for every $||\mathbf{f}_{l(i)}||$.
+    The network width $N$ is set to 500.
+    Note that practically, $||\mathbf{f}_{l(i)}||$ is much smaller than $1$ because the 
+    normalization operation (e.g. batch normalization \cite{batchnorm}) included in $\mathbf{F}_l$
+    will reduce the magnitude of nodes for the residual network.
+    It shows that with high probability, the residual-like transfromation is closer to the
+    orthogonality than the vanilla feed-forward transformation.}
+    \label{cosine_comp}
+\end{figure}
+
 That is, compared with the original feed-forward network with the layer-by-layer transformation
-$\mathbf{F}_i$, the residual-like architecture with identity shortcut connection has the
-layer-by-layer transformation $(\mathbf{I}+\mathbf{F}_i)$, which is more close to the orthogonality
-even when the activation funciton is ReLU.
+$\mathbf{F}_l$, the residual-like architecture with identity shortcut connection has the
+layer-by-layer transformation $\widehat{\mathbf{F}_l}=\mathbf{I}+\mathbf{F}_l$,
+which is more close to the orthogonality even when the activation funciton is ReLU.
 From the results of Section \ref{repr_orthogonal}, we can say that the residual-like architecture
 suffer less from the vanishing representation power problem.
 
@@ -633,6 +819,16 @@ weight initialization are also shown in Table \ref{dead_table}.
 It shows that no matter which activation function is chosen, the maximal depths of the networks are
 more than 10000 layers. That is, the residual-like architecture can prevent the network representation
 power from intensely vanishing. Similar results can be observed in Figure \ref{fig:repr_architecture}.
+
+Also, in Figure \ref{fig:repr_cnn}, we perform the simulation on convolutional neural networks.
+The feature sizes of hidden layers are all the same (32 width, 32 height and 5 channels), and the
+network is fed with 1000 randomly generated image following the zero-mean white Gaussian.
+The stride and the dilation are set to 1, and pooling layers are not inserted into the network.
+The VNI $R_{sq}$ is evaluated with flatten vectors.
+The median, the first and third quartiles of VNI $R_{sq}$ over 20 runs are presented.
+It shows that the convolution operation can make the VNI $R_{sq}$ increase slower with respect to
+the network depth $L$, and similar to Figure \ref{fig:repr_architecture}, the residual connection
+helps the network maintain the representation power.
 
 \begin{figure}[h]
     \centering
@@ -773,6 +969,26 @@ power from intensely vanishing. Similar results can be observed in Figure \ref{f
     }
     \label{fig:repr_architecture}
 \end{figure}
+
+
+\begin{figure}[h]
+    \newcommand{\myWidth}{0.9\textwidth}
+    \centering
+    \includegraphics[width=\myWidth]{10000_cnn_layer_rsq}
+    \caption[The initial VNI $R_{sq}$ of convolutional neural networks.]{
+    To compare the VNI $R_{sq}$ of different network architectures of convolutional neural networks,
+    we plot the results of architectures with and without residual connection.
+    The weight initialization methods are set to the same (Gaussian distribution).
+    Similar to Figure \ref{fig:repr_architecture}, we can see that for both tanh and ReLU cases,
+    the residual architecture has much smaller VNI $R_{sq}$ when the network depth $L$ increases.
+    Also, compared with the feed-forward deep neural network in Figure \ref{fig:repr_architecture},
+    the VNI $R_{sq}$ increases slower with respect to the network depth $L$.
+    It implies that the residual skip connections and the convolution operation can keep more
+    representation power when a very deep network is considered.
+    }
+    \label{fig:repr_cnn}
+\end{figure}
+
 
 \begin{table}[h]
     \centering

@@ -1,14 +1,40 @@
 \chapter{Conclusion} \label{conclusion}
 
-The phenomenon of \textit{vanishing nodes}  is investigated as another challenge  when training deep networks.
-Like the vanishing/exploding gradients problem, vanishing nodes also make training deep networks difficult.
-The hidden nodes in a deep neural network become more correlated as the network depth increases, so the similarity between the hidden nodes increases.
-Because similarity between nodes results in redundancy, the effective number of hidden nodes in a network decreases.
+The phenomenon of \textit{vanishing nodes} 
+is investigated as another challenge when training deep networks.
+Like the vanishing/exploding gradients problem, vanishing nodes also make training deep networks
+difficult.
+The hidden nodes in a deep neural network become more correlated as the network depth increases,
+so the similarity between the hidden nodes increases.
+Because similarity between nodes results in redundancy, the effective number of hidden nodes in a
+network decreases.
 This phenomenon is called\textit{"vanishing nodes"}.
 
 To measure the degree of vanishing nodes, the \textit{Vanishing Nodes Indicator (VNI)} is proposed.
-It is shown theoretically that the VNI is proportional to the network depth and inversely proportional to the network width, which is consistent with the experimental results.
-Moreover, we explore the difference between vanishing/exploding gradients and vanishing nodes.
-%and suggest a criterion to predict the occurrence of two problems by the network depth, the network width, the activation, and the weight initialization. 
-Finally, experimental results show that vanishing/exploding gradients and vanishing nodes are two different challenges that make training deep neural networks difficult. 
+It is shown theoretically that the VNI is proportional to the network depth and inversely proportional
+to the network width, which is consistent with the experimental results.
+Via this theoretical tool,
+we proof that the representation power of a network vanishes as the VNI goes to 1.
+The effective number of nodes goes to 1 as when the VNI equals to 1, which is called
+the "\textit{network collapsing}".
+Also, we show that for a non-orthogonal initialized network, the VNI increases as the network
+depth gets larger, and it asymptotically goes to 1 as the network depth tends to infinity.
+That is, the network collapses when we consider a very deep feed-forward neural network.
+
+However, if weight matrices are initialized with orthogonal distribution, or if a residual-like
+architecture is applied, then the network will not collapse at a large depth.
+We show theoretically that orthogonal weight can have small VNI at initial, and that
+the network with identity shortcut connection is closer to the orthogonality.
+Numerical simulations are also performed on different activation functions, weight initializations
+and network architectures, which have a consistent result with our derivation.
+Both theoretical and numerical results suggest that the weight initialization and the architecture
+of a network determine its trainable depth.
+Orthogonal weight initialization and residual-like architecture, from this point of view, are
+relatively better for training a very deep neural network.
+
+Moreover, we explore the difference between vanishing/exploding gradients and vanishing nodes,
+and suggest a criterion to predict the occurrence of two problems by the network depth,
+the network width, the activation, and the weight initialization. 
+Finally, experimental results show that vanishing/exploding gradients and vanishing nodes are two
+different challenges that make training deep neural networks difficult. 
 %have demonstrated that the back-propagation training of networks intensifies the correlation between hidden nodes.
