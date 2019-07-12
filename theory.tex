@@ -319,7 +319,7 @@ By the relationship between matrix trace and eigenvalues, we have
 
 To relate $R_{sq}$ with the redundancy of random variables, a method for measuring the redundancy
 is needed.
-From the priciple component analysis (PCA), the eigenvalue of $\mathbf{C}$ can represent the 
+From the principle component analysis (PCA), the eigenvalue of $\mathbf{C}$ can represent the 
 energy (i.e. the variance) associated with each eigenvector.
 Therefore, we can use the distribution of eigenvalues $\lambda_i$ to determine the proportion of
 redundant components, and hence the effective number of nodes can be evalueated.
@@ -375,7 +375,7 @@ given $\varepsilon$ are provided in Figure \ref{fig:eps_rsq}.
 
 \begin{theorem}[Opposite trend between the VNI and the ENN]
     \label{oppo}
-    For any theshold $\varepsilon$, 
+    For any threshold $\varepsilon$, 
     \\the $\varepsilon$-effective number of nodes strictly decreases as the VNI $R_{sq}$ increases.
 \end{theorem}
 
@@ -410,7 +410,7 @@ given $\varepsilon$ are provided in Figure \ref{fig:eps_rsq}.
 
 \begin{theorem}[Network collapsing]
     \label{collapse}
-    For any theshold $\varepsilon$,
+    For any threshold $\varepsilon$,
     \\the $\varepsilon$-effective number of nodes $N_e^\varepsilon$ becomes only 1
     when the VNI $R_{sq}$ is 1.
 \end{theorem}
@@ -636,6 +636,25 @@ linear network.
 
 \end{proof}
 
+Also, for a nonlinear network with norm-preserving Gaussian initialized weight matrices (see
+Section \ref{comp:init} for further discussion), we can perform a linear approximiation on the
+input-output Jacobian matrix. That is, replace the product matrix defined in \eqref{prod_def}
+with the Jacobian matrix defined in \eqref{jacobian_eqn}.
+Because the weight matrices are norm-preserving, then we have the same distribution of $\mathbf{D}_l$
+for all hidden layers. That is,
+\begin{equation}
+    \mathbb{E}[\mathbf{D}_l]=
+    diag(\mathbb{E}[\phi'(x_{l(1)})], \mathbb{E}[\phi'(x_{l(2)})], \dots, \mathbb{E}[\phi'(x_{l(N)})])
+    \approx \psi \mathbf{I}
+    \label{same_diag}
+\end{equation}
+where the constant $\psi$ denote the expected derivative $\mathbb{E}[\phi'(x_{l(i)})]$ for every
+node $i$. After the linear approximation in \eqref{same_diag}, we can apply the similar procedure
+in the proof of Theorem \ref{matrix_prod}, and then we can obtain the result for non-linear
+networks. That is, the VNI $R_{sq}$ of
+a non-linear network with
+norm-preserving Gaussian initialized weight matrices goes to 1 as $L\rightarrow\infty$.
+
 %, since the \textit{width} of a neural network also matters.
 %According to the "universal approximation theorem" proved by \cite{universal}, a single hidden layer with a finite number of neurons can approximate continuous functions on compact subsets.
 %That is, the number of neurons in a network is closely related to its representation power, which is .
@@ -773,7 +792,7 @@ $\widehat{\mathbf{F}_l}$ can be expressed as
 \end{equation}
 which has a smaller magnitude (compared with $cos(\mathbf{f}_{l(i)}, \mathbf{f}_{l(j)})$) with high
 probability (as shown in Figure \ref{cosine_comp}).
-That is, the residual-like transfromation is closer to the orthogonality than the vanilla
+That is, the residual-like transformation is closer to the orthogonality than the vanilla
 feed-forward transformation.
 
 \begin{figure}[h]
@@ -789,7 +808,7 @@ feed-forward transformation.
     Note that practically, $||\mathbf{f}_{l(i)}||$ is much smaller than $1$ because the 
     normalization operation (e.g. batch normalization \cite{batchnorm}) included in $\mathbf{F}_l$
     will reduce the magnitude of nodes for the residual network.
-    It shows that with high probability, the residual-like transfromation is closer to the
+    It shows that with high probability, the residual-like transformation is closer to the
     orthogonality than the vanilla feed-forward transformation.}
     \label{cosine_comp}
 \end{figure}
@@ -829,6 +848,8 @@ The median, the first and third quartiles of VNI $R_{sq}$ over 20 runs are prese
 It shows that the convolution operation can make the VNI $R_{sq}$ increase slower with respect to
 the network depth $L$, and similar to Figure \ref{fig:repr_architecture}, the residual connection
 helps the network maintain the representation power.
+Also, if $tanh$ activation is chosen, then the orthogonal weight initialization can also keep the VNI
+$R_{sq}$ at the minimal value, and thus maintain the representation power.
 
 \begin{figure}[h]
     \centering
